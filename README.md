@@ -7,6 +7,12 @@ This repo contains:
 - A corresponding example project that uses the library (Library/ExampleSTPA.sysml)
 - A jupyter notebook version that showcases the application (Jupyter/LibrarySTPA.ipynb)
 
+The library is devided into six packages. For each of the four STPA steps, one dedicated package is used. The fifth and sixth package includes the metadata types and view/viewpoint definitions that facilitate the application of the library.
+
+![Library Packages 1 to 3](https://github.com/DLR-FT/SysMLv2LibrarySTPA/tree/main/Images/LibraryPackages1to3.svg)
+![Library Packages 4 to 6](https://github.com/DLR-FT/SysMLv2LibrarySTPA/tree/main/Images/LibraryPackages4to5.svg)
+
+
 # License and Copyright
 
 For this library the copyright belongs to the German Aerospace Center / Deutsches Zentrum für Luft- und Raumfahrt e.V. (DLR):
