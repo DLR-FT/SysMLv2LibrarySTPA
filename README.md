@@ -9,8 +9,8 @@ This repo contains:
 
 The library is devided into six packages. For each of the four STPA steps, one dedicated package is used. The fifth and sixth package includes the metadata types and view/viewpoint definitions that facilitate the application of the library.
 
-![Library Packages 1 to 3](https://github.com/DLR-FT/SysMLv2LibrarySTPA/tree/main/Images/LibraryPackages1to3.svg)
-![Library Packages 4 to 6](https://github.com/DLR-FT/SysMLv2LibrarySTPA/tree/main/Images/LibraryPackages4to5.svg)
+![Library Packages 1 to 3](Images/LibraryPackages1to3.svg)
+![Library Packages 4 to 6](Images/LibraryPackages4to5.svg)
 
 
 # License and Copyright
