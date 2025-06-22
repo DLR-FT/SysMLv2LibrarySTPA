@@ -12,14 +12,16 @@ The library is devided into six packages. For each of the four STPA steps, one d
 ![Library Packages 1 to 3](Images/LibraryPackages1to3.svg)
 ![Library Packages 4 to 6](Images/LibraryPackages4to6.svg)
 
-
 # Usage
 
-The LibrarySTPA.sysml and ExampleSTPA.sysml files of the library can be used with any SysML v2 tool. The LibrarySTPA.ipynb file is recommended to be used in combination with the pilot-implementation for (Jupyter)[https://github.com/Systems-Modeling/SysML-v2-Release/tree/master/install/jupyter]. Some open-source tools for trying out the library are:
+The LibrarySTPA.sysml and ExampleSTPA.sysml files of the library can be used with any SysML v2 tool. The LibrarySTPA.ipynb file is recommended to be used in combination with the pilot-implementation for [Jupyter](https://github.com/Systems-Modeling/SysML-v2-Release/tree/master/install/jupyter). Some open-source tools for trying out the library are:
 
 - Jupyter - [LinkToGithub](https://github.com/Systems-Modeling/SysML-v2-Release/tree/master/install/jupyter)
 - SysIDE (VSC Plugin) - [LinkToWebsite](https://sensmetry.com/syside/)
 - SysON [LinkToWebsite](https://mbse-syson.org/)
+
+More information on the goals and conecepts behind the library is planned to be published in a complementary article.
+
 # License and Copyright
 
 For this library the copyright belongs to the German Aerospace Center / Deutsches Zentrum für Luft- und Raumfahrt e.V. (DLR):
