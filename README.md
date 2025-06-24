@@ -61,7 +61,7 @@ you agree to license your code under both the MIT and the Apache 2.0 license.
 
 # Contact Information
 
-The main contributor of the profile is Alexander Ahlbrecht:
+The main contributor of the library is Alexander Ahlbrecht:
 - [LinkedIn](https://www.linkedin.com/in/alexander-ahlbrecht-411907225/)
 - [ResearchGate](https://www.researchgate.net/profile/Alexander-Ahlbrecht)
 - [GoogleScholar](https://scholar.google.com/citations?user=XildzN5o6jAC&hl=de&oi=ao)
