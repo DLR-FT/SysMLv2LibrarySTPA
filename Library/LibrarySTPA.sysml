@@ -419,7 +419,7 @@ library package LibrarySTPA {
     }
     
     package ViewsAndViewpoints {
-        import MetaTypesSTPA::*;
+        private import MetaTypesSTPA::*;
         
         doc /* 
             This package contains all the views and viewpoints for the utilization of the STPA library elements
@@ -450,7 +450,7 @@ library package LibrarySTPA {
                     doc /* A relationship matrix is one possibility to create and manage relationships 
                         between losses and hazards */
                     satisfy MapLossesToHazards;
-                    filter @hazard and @loss;
+                    filter @hazard or @loss;
                     //render asRelationshipMatrix;
                 }
             }
@@ -463,8 +463,8 @@ library package LibrarySTPA {
                     doc /* An interconnection diagram is one possibility to create and manage a control structure */
                     satisfy ModelControlStructure;
                     render asInterconnectionDiagram;
-                    filter @controlStructure and @controller and @controllerHuman and @actuator and @process 
-                        and @sensor and @controlAction and @feedback and @mentalModel and @processModel;
+                    filter @controlStructure or @controller or @controllerHuman or @actuator or @process 
+                        or @sensor or @controlAction or @feedback or @mentalModel or @processModel;
                 }
             }
         }
@@ -505,7 +505,7 @@ library package LibrarySTPA {
                     doc /* A relationship matrix is one possibility to create and manage relationships between LSs and UCAs */
                     satisfy MapUCAsToLSs;
                     //render asRelationshipMatrix;
-                    filter @ls and @uca;
+                    filter @ls or @uca;
                 }
             }
         }
