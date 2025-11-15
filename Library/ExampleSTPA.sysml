@@ -83,7 +83,7 @@ package PaperExample {
             part DesignContext {
                 #controller part Ushift {
                     #controller part ControlElectronics {
-                        :>> processMods = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
+                        :>> processBeliefs = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
                         #processModel part VehicleLimitations;
                         #processModel part OperationalMode;
                         #processModel part UnderstandingOfPassengerBehavior;
@@ -95,11 +95,11 @@ package PaperExample {
                 }
 
                 #controllerHuman part Teleoperator {
-                    :>> mentalMods = CurrentWorkload;
+                    :>> mentalBeliefs = CurrentWorkload;
                     #mentalModel CurrentWorkload;
                 }
                 #controllerHuman part Passenger {
-                    :>> mentalMods = UnderstandingOfVehicleBehavior;
+                    :>> mentalBeliefs = UnderstandingOfVehicleBehavior;
                     #mentalModel part UnderstandingOfVehicleBehavior;
                 }
                 #controller part OtherTraffic;

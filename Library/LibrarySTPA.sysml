@@ -4,7 +4,7 @@ library package LibrarySTPA {
     private import Views::*;
     
     doc /*  
-        This library contains a the System-Theoretic Process Analysis (STPA) language extension for SysML v2. 
+        This library contains the System-Theoretic Process Analysis (STPA) language extension for SysML v2. 
         The package is structured according to the four steps of the STPA:
         1. Defining the purpose of the analysis
         2. Modelling the control structure
@@ -45,7 +45,7 @@ library package LibrarySTPA {
         
         enum def StatesOfConcern {
             'Loss of';
-            'Occurence of';
+            'Occurrence of';
         }
         
         abstract part def Hazard {
@@ -100,7 +100,7 @@ library package LibrarySTPA {
                 Example:
                 ControlElectronics of an automated vehicle.
             */
-            abstract part processMods[*] : ProcessModel;
+            abstract part processBeliefs[*] : ProcessModel;
         }
         abstract part controllers[*] : Controller;
         
@@ -112,7 +112,7 @@ library package LibrarySTPA {
                 Example:
                 Teleoperator which makes decisions about the operation of an automated vehicle.
             */
-            abstract part mentalMods[*] : MentalModel;
+            abstract part mentalBeliefs[*] : MentalModel;
         }
         abstract part humanControllers[*] : HumanController;
         
@@ -267,10 +267,10 @@ library package LibrarySTPA {
                 UCA = The <teleoperator> <does not provide> the <operation command> to the <automated vehicle> 
                 <during a complex traffic situation> leading to [H1 - the vehicle not being able to continue its mission].
             */
-            abstract ref part source[1];
+            abstract ref source[1];
             abstract enum type[1] : TypesOfCA;
             abstract ref item controlAction[1] : ModelControlStructureSTPA::ControlAction;
-            abstract ref occurrence receiver[1];
+            abstract ref receiver[1];
             abstract ref part contextUCA[1] : Context;
             abstract ref part linkedHazards[1..*] : DefineAnalysisPurposeSTPA::Hazard;
         }
@@ -299,7 +299,7 @@ library package LibrarySTPA {
                 Process model = <Teloperators awareness of vehicles under observation> & <is incorrect>.
                 
             */
-            abstract ref occurrence factor;
+            abstract ref factor;
             abstract attribute status : String;
         }
         abstract part causalFactors[*] : CausalFactor;
@@ -328,10 +328,10 @@ library package LibrarySTPA {
         */
 
         ////////// Define Analysis Purpose Meta Types //////////
-        metadata def <loss> L :> Metaobjects::SemanticMetadata {
+        metadata def <loss> :> Metaobjects::SemanticMetadata {
         :>> baseType = DefineAnalysisPurposeSTPA::losses meta SysML::PartUsage;
         }
-        metadata def <hazard> H :> Metaobjects::SemanticMetadata {
+        metadata def <hazard> :> Metaobjects::SemanticMetadata {
             :>> baseType = DefineAnalysisPurposeSTPA::hazards meta SysML::PartUsage;
         }
 
