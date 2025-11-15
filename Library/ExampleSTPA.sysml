@@ -74,65 +74,68 @@ package PaperExample {
             private import Interactions::*;
 
             #controlStructure part UshiftAnalysis {
-                :>> controllers = (Ushift.ControlElectronics, Teleoperator, Passenger, OtherTraffic, VRUs, Environment);
-                :>> actuators = Ushift.DriveSystem;
-                :>> sensors = Ushift.PerceptionSystem;
-                :>> processes = VehicleMovement;
+                :>> controllers = (DesignContext.Ushift.ControlElectronics, DesignContext.Teleoperator, DesignContext.Passenger, DesignContext.OtherTraffic, DesignContext.VRUs, DesignContext.Environment);
+                :>> actuators = DesignContext.Ushift.DriveSystem;
+                :>> sensors = DesignContext.Ushift.PerceptionSystem;
+                :>> processes = DesignContext.VehicleMovement;
             }
 
-            #controller part Ushift {
-                #controller part ControlElectronics {
-                    :>> processModels = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
-                    #processModel part VehicleLimitations;
-                    #processModel part OperationalMode;
-                    #processModel part UnderstandingOfPassengerBehavior;
-                    #processModel part AssumptionAboutRoadInfrastructure;
-                    #processModel part PassengerCapacity;
+            part DesignContext {
+                #controller part Ushift {
+                    #controller part ControlElectronics {
+                        :>> processMods = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
+                        #processModel part VehicleLimitations;
+                        #processModel part OperationalMode;
+                        #processModel part UnderstandingOfPassengerBehavior;
+                        #processModel part AssumptionAboutRoadInfrastructure;
+                        #processModel part PassengerCapacity;
+                    }
+                    #sensor part PerceptionSystem;
+                    #actuator part DriveSystem;
                 }
-                #sensor part PerceptionSystem;
-                #actuator part DriveSystem;
+
+                #controllerHuman part Teleoperator {
+                    :>> mentalMods = CurrentWorkload;
+                    #mentalModel CurrentWorkload;
+                }
+                #controllerHuman part Passenger {
+                    :>> mentalMods = UnderstandingOfVehicleBehavior;
+                    #mentalModel part UnderstandingOfVehicleBehavior;
+                }
+                #controller part OtherTraffic;
+                #controller part VRUs;
+                #controller part Environment;
+                #process part VehicleMovement;
             }
-            #controllerHuman part Teleoperator {
-                :>> mentalModels = CurrentWorkload;
-                #mentalModel CurrentWorkload;
-            }
-            #controllerHuman part Passenger {
-                :>> mentalModels = UnderstandingOfVehicleBehavior;
-                #mentalModel part UnderstandingOfVehicleBehavior;
-            }
-            #controller part OtherTraffic;
-            #controller part VRUs;
-            #controller part Environment;
-            #process part VehicleMovement;
 
             // Teleoperator to ControlElectronics
-            flow of OperationCommand from Teleoperator to Ushift.ControlElectronics;
+            flow of OperationCommand from DesignContext.Teleoperator to DesignContext.Ushift.ControlElectronics;
             // ControlElectronics to Teleoperator
-            flow of VehicleStatus from Ushift.ControlElectronics to Teleoperator;
+            flow of VehicleStatus from DesignContext.Ushift.ControlElectronics to DesignContext.Teleoperator;
             // Control to Drive
-            flow of ManeuverCMD from Ushift.ControlElectronics to Ushift.DriveSystem;
+            flow of ManeuverCMD from DesignContext.Ushift.ControlElectronics to DesignContext.Ushift.DriveSystem;
             // Drive to Process
-            flow of BrakingForce from Ushift.DriveSystem to Ushift.VehicleMovement;
-            flow of SteeringForce from Ushift.DriveSystem to VehicleMovement;          
+            flow of BrakingForce from DesignContext.Ushift.DriveSystem to DesignContext.VehicleMovement;
+            flow of SteeringForce from DesignContext.Ushift.DriveSystem to DesignContext.VehicleMovement;          
             // Process to Perception
-            flow of Acceleration from VehicleMovement to Ushift.PerceptionSystem;
+            flow of Acceleration from DesignContext.VehicleMovement to DesignContext.Ushift.PerceptionSystem;
             // Environment to Perception
-            flow of RoadIntegrity from Environment to Ushift.PerceptionSystem;
-            flow of RoadSigns from Environment to Ushift.PerceptionSystem;
+            flow of RoadIntegrity from DesignContext.Environment to DesignContext.Ushift.PerceptionSystem;
+            flow of RoadSigns from DesignContext.Environment to DesignContext.Ushift.PerceptionSystem;
             // VRU to Perception
-            flow of PositionVRUs from VRUs to Ushift.PerceptionSystem;
+            flow of PositionVRUs from DesignContext.VRUs to DesignContext.Ushift.PerceptionSystem;
             // OtherTraffic to Perception
-            flow of PositionOtherTraffic from OtherTraffic to Ushift.PerceptionSystem;
+            flow of PositionOtherTraffic from DesignContext.OtherTraffic to DesignContext.Ushift.PerceptionSystem;
             // Perception to ControlElectronics
-            flow of VehiclePosition from Ushift.PerceptionSystem to Ushift.ControlElectronics;
-            flow of PositionVRUs from Ushift.PerceptionSystem to Ushift.ControlElectronics;
-            flow of RoadIntegrity from Ushift.PerceptionSystem to Ushift.ControlElectronics;
-            flow of PositionOtherTraffic from Ushift.PerceptionSystem to Ushift.ControlElectronics;
-            flow of RoadSigns from Ushift.PerceptionSystem to Ushift.ControlElectronics;
+            flow of VehiclePosition from DesignContext.Ushift.PerceptionSystem to DesignContext.Ushift.ControlElectronics;
+            flow of PositionVRUs from DesignContext.Ushift.PerceptionSystem to DesignContext.Ushift.ControlElectronics;
+            flow of RoadIntegrity from DesignContext.Ushift.PerceptionSystem to DesignContext.Ushift.ControlElectronics;
+            flow of PositionOtherTraffic from DesignContext.Ushift.PerceptionSystem to DesignContext.Ushift.ControlElectronics;
+            flow of RoadSigns from DesignContext.Ushift.PerceptionSystem to DesignContext.Ushift.ControlElectronics;
             // Passenger to ControlElectronics
-            flow of IntentionToTravel from Passenger to Ushift.ControlElectronics;
-            flow of IntentionToLeave from Passenger to Ushift.ControlElectronics;
-            flow of EmergencyCall from Passenger to Ushift.ControlElectronics;
+            flow of IntentionToTravel from DesignContext.Passenger to DesignContext.Ushift.ControlElectronics;
+            flow of IntentionToLeave from DesignContext.Passenger to DesignContext.Ushift.ControlElectronics;
+            flow of EmergencyCall from DesignContext.Passenger to DesignContext.Ushift.ControlElectronics;
         }
     }
     
@@ -150,10 +153,10 @@ package PaperExample {
             // UCA = <Source> & <Type> & <ControlAction> & <Receiver> & <Context> & [Hazards]
             #uca item TeleoperatorDoesNotProvideOperationCommand {
                 doc /* Teleoperator does not provide operation command when the automated vehicle is in an emergency situation */
-                :>> source = ModelControlStructure::Structure::Teleoperator;
+                :>> source = ModelControlStructure::Structure::DesignContext.Teleoperator;
                 :>> controlAction = ModelControlStructure::Interactions::OperationCommand;
                 :>> type = typesOfCAs.NotProvided;
-                :>> receiver = ModelControlStructure::Structure::Ushift.ControlElectronics;
+                :>> receiver = ModelControlStructure::Structure::DesignContext.Ushift.ControlElectronics;
                 :>> contextUCA = Contexts::EmergencyStateDueToClosedOneWayStreet;
                 :>> linkedHazards = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
             }

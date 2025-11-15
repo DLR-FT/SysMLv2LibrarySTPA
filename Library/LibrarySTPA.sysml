@@ -38,12 +38,12 @@ library package LibrarySTPA {
                 Example:
                 <Loss of> <life>.
             */
-            abstract attribute stateOfConcern :> statesOfConcern;
+            abstract attribute stateOfConcern : StatesOfConcern;
             abstract concern stakeholderConcern;
         }
         abstract part losses[*] : Loss;
         
-        enum statesOfConcern {
+        enum def StatesOfConcern {
             'Loss of';
             'Occurence of';
         }
@@ -100,7 +100,7 @@ library package LibrarySTPA {
                 Example:
                 ControlElectronics of an automated vehicle.
             */
-            abstract part processModels[*] : ProcessModel;
+            abstract part processMods[*] : ProcessModel;
         }
         abstract part controllers[*] : Controller;
         
@@ -112,7 +112,7 @@ library package LibrarySTPA {
                 Example:
                 Teleoperator which makes decisions about the operation of an automated vehicle.
             */
-            abstract part mentalModels : MentalModel;
+            abstract part mentalMods[*] : MentalModel;
         }
         abstract part humanControllers[*] : HumanController;
         
@@ -252,7 +252,7 @@ library package LibrarySTPA {
             ProvidedTooSoon;
             ProvidedOutOfOrder;
         }
-        enum typesOfCAs : TypesOfCA;
+        enum typesOfCAs[*] : TypesOfCA;
     
         abstract item def UnsafeControlAction :> ModelControlStructureSTPA::ControlAction {
             doc /* 
