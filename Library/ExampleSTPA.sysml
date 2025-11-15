@@ -1,47 +1,50 @@
 package PaperExample {
  
-    private import LibrarySTPA::DefineAnalysisPurpose::*;
-    private import LibrarySTPA::ModelControlStructure::*;
-    private import LibrarySTPA::IdentifyUCAs::*;
-    private import LibrarySTPA::IdentifyLSs::*;
+    private import LibrarySTPA::DefineAnalysisPurposeSTPA::*;
+    private import LibrarySTPA::ModelControlStructureSTPA::*;
+    private import LibrarySTPA::IdentifyUCAsSTPA::*;
+    private import LibrarySTPA::IdentifyLSsSTPA::*;
     private import LibrarySTPA::MetaTypesSTPA::*;
     private import LibrarySTPA::ViewsAndViewpoints::DefineAnalysisPurposeViews::*;
     
     package DefineAnalysisPurpose { 
         package Stakeholders {            
             concern Safety {
+                subject Ushift;
                 stakeholder Passenger;
                 stakeholder Manufacturer;
                 stakeholder Operator;
             }
             concern Reputation {
+                subject Ushift;
                 stakeholder Manufacturer;
                 stakeholder Operator;
             }
             concern Revenue {
+                subject Ushift;
                 stakeholder Manufacturer;
                 stakeholder Operator;
             }
         }
         package Losses {            
-            #loss LossOfCustomerSatisfaction {
+            #loss part LossOfCustomerSatisfaction {
                 :>> stakeholderConcern = Stakeholders::Reputation;
             }
-            #loss DamageToInfrastructure {
+            #loss part DamageToInfrastructure {
                 :>> stakeholderConcern = Stakeholders::Revenue;
             }
-            #loss LossOfLife {
+            #loss part LossOfLife {
                 :>> stakeholderConcern = Stakeholders::Safety;
             }
         }
         package Hazards {
-            #hazard VehicleCanNotExecuteMission {
+            #hazard part VehicleCanNotExecuteMission {
                 :>> linkedLosses = Losses::LossOfCustomerSatisfaction;
             }
-            #hazard VehicleComesToCloseToInfrastructure {
+            #hazard part VehicleComesToCloseToInfrastructure {
                 :>> linkedLosses = Losses::DamageToInfrastructure;
             }
-            #hazard VehicleComesTocloseToPeople {
+            #hazard part VehicleComesTocloseToPeople {
                 :>> linkedLosses = Losses::LossOfLife;
             }
         }
@@ -50,96 +53,107 @@ package PaperExample {
     package ModelControlStructure {
         package Interactions {
             // Control Actions
-            #controlAction OperationCommand;
-            #controlAction ManeuverCMD;
-            #controlAction BrakingForce;
-            #controlAction SteeringForce;
-            #controlAction IntentionToTravel;
-            #controlAction IntentionToLeave;
-            #controlAction EmergencyCall;
+            #controlAction item OperationCommand;
+            #controlAction item ManeuverCMD;
+            #controlAction item BrakingForce;
+            #controlAction item SteeringForce;
+            #controlAction item IntentionToTravel;
+            #controlAction item IntentionToLeave;
+            #controlAction item EmergencyCall;
             
             // Feedback
-            #feedback VehiclePosition;
-            #feedback Acceleration;
-            #feedback VehicleStatus;
-            #feedback RoadIntegrity;
-            #feedback RoadSigns;
-            #feedback PositionVRUs;
-            #feedback PositionOtherTraffic;
+            #feedback item VehiclePosition;
+            #feedback item Acceleration;
+            #feedback item VehicleStatus;
+            #feedback item RoadIntegrity;
+            #feedback item RoadSigns;
+            #feedback item PositionVRUs;
+            #feedback item PositionOtherTraffic;
         }
         package Structure {
-            part ControlStructureUshift{
-                #controllerHuman Teleoperator {
-                    //:>> mentalModels = CurrentWorkload;
-                    #mentalModel CurrentWorkload;
-                }
-                #controller ControlElectronics {
-                    //:>> processModels = VehicleLimitations;
-                    #processModel VehicleLimitations;
-                    #processModel OperationalMode;
-                    #processModel UnderstandingOfPassengerBehavior;
-                    #processModel AssumptionAboutRoadInfrastructure;
-                    #processModel PassengerCapacity;
-                }
-                #sensor PerceptionSystem;
-                #actuator DriveSystem;
-                #controllerHuman Passenger {
-                    #mentalModel UnderstandingOfVehicleBehavior;
-                }
-                #controller OtherTraffic;
-                #controller VRUs;
-                #controller Environment;
-                #process VehicleMovement;
+            private import Interactions::*;
+
+            #controlStructure part UshiftAnalysis {
+                :>> controllers = (Ushift.ControlElectronics, Teleoperator, Passenger, OtherTraffic, VRUs, Environment);
+                :>> actuators = Ushift.DriveSystem;
+                :>> sensors = Ushift.PerceptionSystem;
+                :>> processes = VehicleMovement;
             }
+
+            #controller part Ushift {
+                #controller part ControlElectronics {
+                    :>> processModels = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
+                    #processModel part VehicleLimitations;
+                    #processModel part OperationalMode;
+                    #processModel part UnderstandingOfPassengerBehavior;
+                    #processModel part AssumptionAboutRoadInfrastructure;
+                    #processModel part PassengerCapacity;
+                }
+                #sensor part PerceptionSystem;
+                #actuator part DriveSystem;
+            }
+            #controllerHuman part Teleoperator {
+                :>> mentalModels = CurrentWorkload;
+                #mentalModel CurrentWorkload;
+            }
+            #controllerHuman part Passenger {
+                :>> mentalModels = UnderstandingOfVehicleBehavior;
+                #mentalModel part UnderstandingOfVehicleBehavior;
+            }
+            #controller part OtherTraffic;
+            #controller part VRUs;
+            #controller part Environment;
+            #process part VehicleMovement;
+
             // Teleoperator to ControlElectronics
-            flow of Interactions::OperationCommand from ControlStructureUshift.Teleoperator to ControlStructureUshift.ControlElectronics;
+            flow of OperationCommand from Teleoperator to Ushift.ControlElectronics;
             // ControlElectronics to Teleoperator
-            flow of Interactions::VehicleStatus from ControlStructureUshift.ControlElectronics to ControlStructureUshift.Teleoperator;
+            flow of VehicleStatus from Ushift.ControlElectronics to Teleoperator;
             // Control to Drive
-            flow of Interactions::ManeuverCMD from ControlStructureUshift.ControlElectronics to ControlStructureUshift.DriveSystem;
+            flow of ManeuverCMD from Ushift.ControlElectronics to Ushift.DriveSystem;
             // Drive to Process
-            flow of Interactions::BrakingForce from ControlStructureUshift.DriveSystem to ControlStructureUshift.VehicleMovement;
-            flow of Interactions::SteeringForce from ControlStructureUshift.DriveSystem to ControlStructureUshift.VehicleMovement;          
+            flow of BrakingForce from Ushift.DriveSystem to Ushift.VehicleMovement;
+            flow of SteeringForce from Ushift.DriveSystem to VehicleMovement;          
             // Process to Perception
-            flow of Interactions::Acceleration from ControlStructureUshift.VehicleMovement to ControlStructureUshift.PerceptionSystem;
+            flow of Acceleration from VehicleMovement to Ushift.PerceptionSystem;
             // Environment to Perception
-            flow of Interactions::RoadIntegrity from ControlStructureUshift.Environment to ControlStructureUshift.PerceptionSystem;
-            flow of Interactions::RoadSigns from ControlStructureUshift.Environment to ControlStructureUshift.PerceptionSystem;
+            flow of RoadIntegrity from Environment to Ushift.PerceptionSystem;
+            flow of RoadSigns from Environment to Ushift.PerceptionSystem;
             // VRU to Perception
-            flow of Interactions::PositionVRUs from ControlStructureUshift.VRUs to ControlStructureUshift.PerceptionSystem;
+            flow of PositionVRUs from VRUs to Ushift.PerceptionSystem;
             // OtherTraffic to Perception
-            flow of Interactions::PositionOtherTraffic from ControlStructureUshift.OtherTraffic to ControlStructureUshift.PerceptionSystem;
+            flow of PositionOtherTraffic from OtherTraffic to Ushift.PerceptionSystem;
             // Perception to ControlElectronics
-            flow of Interactions::VehiclePosition from ControlStructureUshift.PerceptionSystem to ControlStructureUshift.ControlElectronics;
-            flow of Interactions::PositionVRUs from ControlStructureUshift.PerceptionSystem to ControlStructureUshift.ControlElectronics;
-            flow of Interactions::RoadIntegrity from ControlStructureUshift.PerceptionSystem to ControlStructureUshift.ControlElectronics;
-            flow of Interactions::PositionOtherTraffic from ControlStructureUshift.PerceptionSystem to ControlStructureUshift.ControlElectronics;
-            flow of Interactions::RoadSigns from ControlStructureUshift.PerceptionSystem to ControlStructureUshift.ControlElectronics;
+            flow of VehiclePosition from Ushift.PerceptionSystem to Ushift.ControlElectronics;
+            flow of PositionVRUs from Ushift.PerceptionSystem to Ushift.ControlElectronics;
+            flow of RoadIntegrity from Ushift.PerceptionSystem to Ushift.ControlElectronics;
+            flow of PositionOtherTraffic from Ushift.PerceptionSystem to Ushift.ControlElectronics;
+            flow of RoadSigns from Ushift.PerceptionSystem to Ushift.ControlElectronics;
             // Passenger to ControlElectronics
-            flow of Interactions::IntentionToTravel from ControlStructureUshift.Passenger to ControlStructureUshift.ControlElectronics;
-            flow of Interactions::IntentionToLeave from ControlStructureUshift.Passenger to ControlStructureUshift.ControlElectronics;
-            flow of Interactions::EmergencyCall from ControlStructureUshift.Passenger to ControlStructureUshift.ControlElectronics;
+            flow of IntentionToTravel from Passenger to Ushift.ControlElectronics;
+            flow of IntentionToLeave from Passenger to Ushift.ControlElectronics;
+            flow of EmergencyCall from Passenger to Ushift.ControlElectronics;
         }
     }
     
     package IdentifyUCAs {
         package Contexts {
             // Context = ⟨SystemConditions⟩ & ⟨EnvironmentalConditions⟩
-            #context EmergencyStateDueToClosedOneWayStreet {
+            #context part EmergencyStateDueToClosedOneWayStreet {
                 :>> systemConditions = EmergencyState;
                 :>> environmentalConditions = ClosedOneWayStreet;
             }
-            #sysCon EmergencyState;
-            #envCon ClosedOneWayStreet;
+            #sysCon part EmergencyState;
+            #envCon part ClosedOneWayStreet;
         }
         package UCAs {
             // UCA = <Source> & <Type> & <ControlAction> & <Receiver> & <Context> & [Hazards]
-            #uca TeleoperatorDoesNotProvideOperationCommand : UnsafeControlAction {
-                :>> description = "Teleoperator does not provide operation command when the automated vehicle is in an emergency situation";
-                :>> source = ModelControlStructure::Structure::ControlStructureUshift.Teleoperator;
+            #uca item TeleoperatorDoesNotProvideOperationCommand {
+                doc /* Teleoperator does not provide operation command when the automated vehicle is in an emergency situation */
+                :>> source = ModelControlStructure::Structure::Teleoperator;
                 :>> controlAction = ModelControlStructure::Interactions::OperationCommand;
-                :>> type = typesOfCA.NotProvided;
-                :>> receiver = ModelControlStructure::Structure::ControlStructureUshift.ControlElectronics;
+                :>> type = typesOfCAs.NotProvided;
+                :>> receiver = ModelControlStructure::Structure::Ushift.ControlElectronics;
                 :>> contextUCA = Contexts::EmergencyStateDueToClosedOneWayStreet;
                 :>> linkedHazards = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
             }
@@ -148,15 +162,15 @@ package PaperExample {
     
     package IdentifyLSs {
         package CausalFactors {
-            #cf TeleoperatorNotInformed {
+            #cf part TeleoperatorNotInformed {
                 :>> factor = ModelControlStructure::Interactions::VehicleStatus;
                 :>> status = "not forwarded";
             }
         }
         package LossScenarios {
-            #ls TeleoperatorNotAwareOfVehiclesEmergencySituation {   
+            #ls part TeleoperatorNotAwareOfVehiclesEmergencySituation {
                 // LS = <CausalFactors> & [UCAs]
-                :>> description = "The automated vehicle drives into a one way street which is closed and can not resolve the situation. However, the teleoperator is not aware that he is responsible for the vehicle. As a result, the teleoperator does not provide a resolving operation command.";
+                doc /* The automated vehicle drives into a one way street which is closed and can not resolve the situation. However, the teleoperator is not aware that he is responsible for the vehicle. As a result, the teleoperator does not provide a resolving operation command */
                 :>> scenarioFactors = CausalFactors::TeleoperatorNotInformed;
                 :>> ucas = IdentifyUCAs::UCAs::TeleoperatorDoesNotProvideOperationCommand;
             }
