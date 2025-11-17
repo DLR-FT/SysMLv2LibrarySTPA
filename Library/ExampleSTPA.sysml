@@ -1,9 +1,9 @@
 package PaperExample {
  
-    private import LibrarySTPA::DefineAnalysisPurposeSTPA::*;
-    private import LibrarySTPA::ModelControlStructureSTPA::*;
-    private import LibrarySTPA::IdentifyUCAsSTPA::*;
-    private import LibrarySTPA::IdentifyLSsSTPA::*;
+    private import LibrarySTPA::DefineAnalysisPurpose::*;
+    private import LibrarySTPA::ModelControlStructure::*;
+    private import LibrarySTPA::IdentifyUCAs::*;
+    private import LibrarySTPA::IdentifyLSs::*;
     private import LibrarySTPA::MetaTypesSTPA::*;
     private import LibrarySTPA::ViewsAndViewpoints::DefineAnalysisPurposeViews::*;
     
@@ -157,7 +157,7 @@ package PaperExample {
                 :>> controlAction = ModelControlStructure::Interactions::OperationCommand;
                 :>> type = typesOfCAs.NotProvided;
                 :>> receiver = ModelControlStructure::Structure::UshiftCS.Ushift.ControlElectronics;
-                :>> contextUCA = Contexts::EmergencyStateDueToClosedOneWayStreet;
+                :>> context = Contexts::EmergencyStateDueToClosedOneWayStreet;
                 :>> linkedHazards = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
             }
         }
