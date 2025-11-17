@@ -70,7 +70,7 @@ library package LibrarySTPA {
         doc /* 
             This package contains the elements related to the second step of the STPA. 
             The second step covers the modelling of the control structure.
-        */ 
+        */
 
         abstract part def ControlStructure {
             doc /* 
@@ -82,13 +82,13 @@ library package LibrarySTPA {
                 Example:
                 A control oriented model showing the interactions of an automated vehicle with related systems and people.
             */
-            abstract ref part actuator[*] : Actuator;
-            abstract ref part sensor[*] : Sensor;
-            abstract ref part process[*] : Process;
-            abstract ref part controller[*] : Controller;
-            abstract ref item controlAction[*] : ControlAction;
-            abstract ref item feedback[*] : Feedback;
-            abstract ref item otherInformation[*] : OtherInformation;
+            abstract ref part actuatorCS[*] : Actuator;
+            abstract ref part sensorCS[*] : Sensor;
+            abstract ref part processCS[*] : Process;
+            abstract ref part controllerCS[*] : Controller;
+            abstract ref item controlActionCS[*] : ControlAction;
+            abstract ref item feedbackCS[*] : Feedback;
+            abstract ref item otherInformationCS[*] : OtherInformation;
         }
         abstract part controlStructures[*] : ControlStructure;
         
@@ -299,7 +299,7 @@ library package LibrarySTPA {
                 Process model = <Teloperators awareness of vehicles under observation> & <is incorrect>.
                 
             */
-            abstract ref factor;
+            abstract ref item factor;
             abstract attribute status : String;
         }
         abstract part causalFactors[*] : CausalFactor;
