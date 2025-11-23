@@ -22,7 +22,7 @@ library package LibrarySTPA {
             as the baseline for the analysis.
         */
 
-        abstract part def Loss {
+        part def Loss {
             doc /* 
                 Definition:
                 Represent the act or fact of being unable to keep or
@@ -38,17 +38,17 @@ library package LibrarySTPA {
                 Example:
                 <Loss of> <life>.
             */
-            abstract attribute stateOfConcern : StatesOfConcern;
-            abstract concern stakeholderConcern;
+            attribute stateOfConcern : StatesOfConcern;
+            concern stakeholderConcern;
         }
-        abstract part losses[*] : Loss;
+        part losses[*] : Loss;
         
         enum def StatesOfConcern {
             'Loss of';
             'Occurrence of';
         }
         
-        abstract part def Hazard {
+        part def Hazard {
             doc /* 
                 Definition:
                 Represents a system state or set of conditions that together with a 
@@ -60,11 +60,11 @@ library package LibrarySTPA {
                 Example:
                 <Automated vehicle> <loses control> resulting in [loss of life].
              */
-            abstract ref part system[1];
-            abstract attribute unsafeCondition[1] : String;
-            abstract ref part linkedLosses[1..*] : Loss;
+            ref part system[1];
+            attribute unsafeCondition[1] : String;
+            ref part linkedLosses[1..*] : Loss;
         }
-        abstract part hazards[*] : Hazard;
+        part hazards[*] : Hazard;
     }
     package ModelControlStructure {
         doc /* 
@@ -72,7 +72,7 @@ library package LibrarySTPA {
             The second step covers the modelling of the control structure.
         */
 
-        abstract part def ControlStructure {
+        part def ControlStructure {
             doc /* 
                 Definition:
                 Represents a hierarchical structure that models the layers of control in a system. 
@@ -82,17 +82,17 @@ library package LibrarySTPA {
                 Example:
                 A control oriented model showing the interactions of an automated vehicle with related systems and people.
             */
-            abstract ref part actuatorsCS[*] : Actuator;
-            abstract ref part sensorsCS[*] : Sensor;
-            abstract ref part processesCS[*] : Process;
-            abstract ref part controllersCS[*] : Controller;
-            abstract ref item controlActionsCS[*] : ControlAction;
-            abstract ref item feedbacksCS[*] : Feedback;
-            abstract ref item otherInformationsCS[*] : OtherInformation;
+            ref part actuatorsRef[*] : Actuator;
+            ref part sensorsRef[*] : Sensor;
+            ref part processesRef[*] : Process;
+            ref part controllersRef[*] : Controller;
+            ref item controlActionsRef[*] : ControlAction;
+            ref item feedbacksRef[*] : Feedback;
+            ref item otherInformationsRef[*] : OtherInformation;
         }
-        abstract part controlStructures[*] : ControlStructure;
+        part controlStructures[*] : ControlStructure;
         
-        abstract part def Controller {
+        part def Controller {
             doc /* 
                 Definition:
                 Represents an entity that forms beliefs, makes decisions, and provides control actions to achieve or maintain a state or goal.
@@ -100,11 +100,11 @@ library package LibrarySTPA {
                 Example:
                 ControlElectronics of an automated vehicle.
             */
-            abstract part processBeliefs[*] : ProcessModel;
+            part processBeliefs[*] : ProcessModel;
         }
-        abstract part controllers[*] : Controller;
+        part controllers[*] : Controller;
         
-        abstract part def HumanController :> Controller {
+        part def HumanController :> Controller {
             doc /* 
                 Definition:
                 Represents a human that takes over controller related activities.
@@ -112,11 +112,11 @@ library package LibrarySTPA {
                 Example:
                 Teleoperator which makes decisions about the operation of an automated vehicle.
             */
-            abstract part mentalBeliefs[*] : MentalModel;
+            part mentalBeliefs[*] : MentalModel;
         }
-        abstract part humanControllers[*] : HumanController;
+        part humanControllers[*] : HumanController;
         
-        abstract part def ProcessModel {
+        part def ProcessModel {
             doc /*
                 Definition:
                 A representation of a controller's internal beliefs used to make decisions. 
@@ -128,9 +128,9 @@ library package LibrarySTPA {
             */
             
         }
-        abstract part processModels[*] : ProcessModel;
+        part processModels[*] : ProcessModel;
         
-        abstract part def MentalModel :> ProcessModel {
+        part def MentalModel :> ProcessModel {
             doc /*
                 Definition:
                 A representation of someone's thought process about how something works in the real world. 
@@ -140,9 +140,9 @@ library package LibrarySTPA {
                 Teleoperator's idea of which vehicle he supervises.
             */
         }
-        abstract part mentalModels[*] : MentalModel;
+        part mentalModels[*] : MentalModel;
         
-        abstract part def Actuator {
+        part def Actuator {
             doc /* 
                 Definition:
                 Represents an entity in the control structure which executes a control action by a controller.
@@ -151,20 +151,20 @@ library package LibrarySTPA {
                 Brake of the automated vehicle.
             */
         }
-        abstract part actuators[*] : Actuator;
+        part actuators[*] : Actuator;
         
-        abstract part def Sensor {
+        part def Sensor {
             doc /* 
-            Definition:
-            Represents an entitiy in the control structure which provides feedback to a controller.
-            
-            Example:
-            Perception system of automated vehicle.
+                Definition:
+                Represents an entitiy in the control structure which provides feedback to a controller.
+                
+                Example:
+                Perception system of automated vehicle.
             */
         }
-        abstract part sensors[*] : Sensor;
+        part sensors[*] : Sensor;
         
-        abstract part def Process {
+        part def Process {
             doc /* 
                 Definition:
                 Represents any process, such as a physical process, a virtual process, a controller, or other processes 
@@ -175,9 +175,9 @@ library package LibrarySTPA {
                 Movement of the automated vehicle.
             */
         }
-        abstract part processes[*] : Process;
+        part processes[*] : Process;
 
-        abstract item def ControlAction {
+        item def ControlAction {
             doc /* 
                 Definition:
                 Represents a command, instruction, or other directive 
@@ -187,29 +187,29 @@ library package LibrarySTPA {
                 Teleopartor command.
             */
         }
-        abstract item controlActions[*] : ControlAction;
+        item controlActions[*] : ControlAction;
         
-        abstract item def Feedback {
+        item def Feedback {
             doc /* 
-            Definition:
-            Represents a value, measurement or other information provided to a controller to achieve its goals.
-            
-            Example:
-            Camera images.
+                Definition:
+                Represents a value, measurement or other information provided to a controller to achieve its goals.
+                
+                Example:
+                Camera images.
             */
         }
-        abstract item feedbacks[*] : Feedback;
+        item feedbacks[*] : Feedback;
         
-        abstract item def OtherInformation {
+        item def OtherInformation {
             doc /*
-            Definition:
-            Represents values that may come from other processes, other controllers, or other sources in the system or the environment.
-            
-            Example:
-            Sunlight from the environment.
+                Definition:
+                Represents values that may come from other processes, other controllers, or other sources in the system or the environment.
+                
+                Example:
+                Sunlight from the environment.
             */
         }
-        abstract item otherInformation[*] : OtherInformation;
+        item otherInformation[*] : OtherInformation;
     }
 
     package IdentifyUCAs {
@@ -218,7 +218,7 @@ library package LibrarySTPA {
             The third step covers the identification of unsafe control actions.
         */
             
-        abstract part def Context {
+        part def Context {
             doc /* 
                 Definition:
                 Conditions where a control action may be unsafe.
@@ -228,14 +228,14 @@ library package LibrarySTPA {
                 Environmental Context = A road closure within a one way street.
                 System Context = An automated vehicle is in an emergency state.
             */
-            abstract ref part environmentalCondition : EnvironmentalCondition;
-            abstract ref part systemCondition : SystemCondition;
+            ref part envConRef : EnvironmentalCondition;
+            ref part sysConRef : SystemCondition;
         }
-        abstract part contexts[*] : Context;
-        abstract part def EnvironmentalCondition;
-        abstract part environmentalConditions[*] : EnvironmentalCondition;
-        abstract part def SystemCondition;
-        abstract part systemConditions[*] : SystemCondition;
+        part contexts[*] : Context;
+        part def EnvironmentalCondition;
+        part environmentalConditions[*] : EnvironmentalCondition;
+        part def SystemCondition;
+        part systemConditions[*] : SystemCondition;
             
         enum def TypesOfCA {
             doc /* 
@@ -254,7 +254,7 @@ library package LibrarySTPA {
         }
         enum typesOfCAs[*] : TypesOfCA;
     
-        abstract item def UnsafeControlAction :> ModelControlStructure::ControlAction {
+        item def UnsafeControlAction :> ModelControlStructure::ControlAction {
             doc /* 
                 Definition:
                 Represents a control action that, in a particular context, will lead to a hazard, 
@@ -267,19 +267,19 @@ library package LibrarySTPA {
                 UCA = The <teleoperator> <does not provide> the <operation command> to the <automated vehicle> 
                 <during a complex traffic situation> leading to [H1 - the vehicle not being able to continue its mission].
             */
-            abstract ref source[1];
-            abstract enum type[1] : TypesOfCA;
-            abstract ref item controlAction[1] : ModelControlStructure::ControlAction;
-            abstract ref receiver[1];
-            abstract ref part context[1] : Context;
-            abstract ref part linkedHazards[1..*] : DefineAnalysisPurpose::Hazard;
+            ref part sourceRef[1] : ModelControlStructure::Controller, ModelControlStructure::Actuator;
+            ref enum typeRef[1] : TypesOfCA;
+            ref item controlActionRef[1] : ModelControlStructure::ControlAction;
+            ref part receiverRef[1] : ModelControlStructure::Process, ModelControlStructure::Controller;
+            ref part contextRef[1] : Context;
+            ref part hazardsRef[1..*] : DefineAnalysisPurpose::Hazard;
         }
-        abstract item unsafeControlActions[*] : UnsafeControlAction;
+        item unsafeControlActions[*] : UnsafeControlAction;
         
-        abstract item def UnwantedControlAction :> UnsafeControlAction;
-        abstract item unwantedControlActions[*] : UnwantedControlAction;
-        abstract item def UnsecureControlAction :> UnsafeControlAction;
-        abstract item unsecureControlAction[*] : UnsecureControlAction;
+        item def UnwantedControlAction :> UnsafeControlAction;
+        item unwantedControlActions[*] : UnwantedControlAction;
+        item def UnsecureControlAction :> UnsafeControlAction;
+        item unsecureControlAction[*] : UnsecureControlAction;
     }
 
     package IdentifyLSs {
@@ -288,7 +288,7 @@ library package LibrarySTPA {
             The fourth step covers the identification of loss scenarios. 
         */
         
-        abstract part def CausalFactor {
+        part def CausalFactor {
             doc /*
                 Definition:
                 Represents a circumstance, fact, or influence contributing to a causal scenario. 
@@ -297,14 +297,13 @@ library package LibrarySTPA {
                 Example:
                 Interaction = <Teleoperator command> & <not forwarded>.
                 Process model = <Awareness of supervised vehicles> & <is incorrect>.
-                
             */
-            abstract ref item factor[1];
-            abstract attribute status : String;
+            ref item factorRef[1] : ModelControlStructure::ControlAction, ModelControlStructure::Feedback, ModelControlStructure::ProcessModel, ModelControlStructure::MentalModel, IdentifyUCAs::EnvironmentalCondition, IdentifyUCAs::SystemCondition;
+            attribute status : String;
         }
-        abstract part causalFactors[*] : CausalFactor;
+        part causalFactors[*] : CausalFactor;
         
-        abstract part def LossScenario {
+        part def LossScenario {
             doc /*
                 Definition:
                 Represents the causal factors that can lead to unsafe control actions and to hazards.
@@ -316,10 +315,10 @@ library package LibrarySTPA {
                 <Teleoperator command> & <not forwarded> leading to [UCA1]
                 <Awareness of supervised vehicles> & <is incorrect> leading to [UCA2]  
             */
-            abstract ref part scenarioFactors[1..*] : IdentifyLSs::CausalFactor;
-            abstract ref item ucas[1..*] : IdentifyUCAs::UnsafeControlAction;
+            ref part causalFactorsRef[1..*] : IdentifyLSs::CausalFactor;
+            ref item ucasRef[1..*] : IdentifyUCAs::UnsafeControlAction;
         }
-        abstract part lossScenarios[*] : LossScenario;
+        part lossScenarios[*] : LossScenario;
     }
     
     package MetaTypesSTPA {

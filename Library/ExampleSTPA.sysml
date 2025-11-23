@@ -74,12 +74,12 @@ package PaperExample {
             private import Interactions::*;
 
             #controlStructure part UshiftCS {
-                :>> controllersCS = (Ushift.ControlElectronics, Teleoperator, Passenger, OtherTraffic, VRUs, Environment);
-                :>> actuatorsCS = Ushift.DriveSystem;
-                :>> sensorsCS = Ushift.PerceptionSystem;
-                :>> processesCS = VehicleMovement;
-                :>> controlActionsCS = (OperationCommand, ManeuverCMD, BrakingForce, SteeringForce, IntentionToTravel, IntentionToLeave, EmergencyCall);
-                :>> feedbacksCS = (VehiclePosition, Acceleration, VehicleStatus, RoadIntegrity, RoadSigns, PositionVRUs, PositionOtherTraffic);
+                :>> controllersRef = (Ushift.ControlElectronics, Teleoperator, Passenger, OtherTraffic, VRUs, Environment);
+                :>> actuatorsRef = Ushift.DriveSystem;
+                :>> sensorsRef = Ushift.PerceptionSystem;
+                :>> processesRef = VehicleMovement;
+                :>> controlActionsRef = (OperationCommand, ManeuverCMD, BrakingForce, SteeringForce, IntentionToTravel, IntentionToLeave, EmergencyCall);
+                :>> feedbacksRef = (VehiclePosition, Acceleration, VehicleStatus, RoadIntegrity, RoadSigns, PositionVRUs, PositionOtherTraffic);
 
                 #controller part Ushift {
                     #controller part ControlElectronics {
@@ -153,12 +153,12 @@ package PaperExample {
             // UCA = <Source> & <Type> & <ControlAction> & <Receiver> & <Context> & [Hazards]
             #uca item TeleoperatorDoesNotProvideOperationCommand {
                 doc /* Teleoperator does not provide operation command when the automated vehicle is in an emergency situation */
-                :>> source = ModelControlStructure::Structure::UshiftCS.Teleoperator;
-                :>> controlAction = ModelControlStructure::Interactions::OperationCommand;
-                :>> type = typesOfCAs.NotProvided;
-                :>> receiver = ModelControlStructure::Structure::UshiftCS.Ushift.ControlElectronics;
-                :>> context = Contexts::EmergencyStateDueToClosedOneWayStreet;
-                :>> linkedHazards = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
+                :>> sourceRef = ModelControlStructure::Structure::UshiftCS.Teleoperator;
+                :>> controlActionRef = ModelControlStructure::Interactions::OperationCommand;
+                :>> typeRef = typesOfCAs.NotProvided;
+                :>> receiverRef = ModelControlStructure::Structure::UshiftCS.Ushift.ControlElectronics;
+                :>> contextRef = Contexts::EmergencyStateDueToClosedOneWayStreet;
+                :>> hazardsRef = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
             }
         }
     }
@@ -166,7 +166,7 @@ package PaperExample {
     package IdentifyLSs {
         package CausalFactors {
             #cf part TeleoperatorNotInformed {
-                :>> factor = ModelControlStructure::Interactions::VehicleStatus;
+                :>> factorRef = ModelControlStructure::Interactions::VehicleStatus;
                 :>> status = "not forwarded";
             }
         }
@@ -174,8 +174,8 @@ package PaperExample {
             #ls part TeleoperatorNotAwareOfVehiclesEmergencySituation {
                 // LS = <CausalFactors> & [UCAs]
                 doc /* The automated vehicle drives into a one way street which is closed and can not resolve the situation. However, the teleoperator is not aware that he is responsible for the vehicle. As a result, the teleoperator does not provide a resolving operation command */
-                :>> scenarioFactors = CausalFactors::TeleoperatorNotInformed;
-                :>> ucas = IdentifyUCAs::UCAs::TeleoperatorDoesNotProvideOperationCommand;
+                :>> causalFactorsRef = CausalFactors::TeleoperatorNotInformed;
+                :>> ucasRef = IdentifyUCAs::UCAs::TeleoperatorDoesNotProvideOperationCommand;
             }
         }
     }
