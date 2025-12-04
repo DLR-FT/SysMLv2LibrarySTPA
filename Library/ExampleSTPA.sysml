@@ -28,24 +28,24 @@ package PaperExample {
         }
         package Losses {            
             #loss part LossOfCustomerSatisfaction {
-                :>> stakeholderConcern = Stakeholders::Reputation;
+                concern :>> stakeholderConcern = Stakeholders::Reputation;
             }
             #loss part DamageToInfrastructure {
-                :>> stakeholderConcern = Stakeholders::Revenue;
+                concern :>> stakeholderConcern = Stakeholders::Revenue;
             }
             #loss part LossOfLife {
-                :>> stakeholderConcern = Stakeholders::Safety;
+                concern :>> stakeholderConcern = Stakeholders::Safety;
             }
         }
         package Hazards {
             #hazard part VehicleCanNotExecuteMission {
-                :>> linkedLosses = Losses::LossOfCustomerSatisfaction;
+                ref part:>> lossesRef = Losses::LossOfCustomerSatisfaction;
             }
             #hazard part VehicleComesToCloseToInfrastructure {
-                :>> linkedLosses = Losses::DamageToInfrastructure;
+                ref part :>> lossesRef = Losses::DamageToInfrastructure;
             }
             #hazard part VehicleComesTocloseToPeople {
-                :>> linkedLosses = Losses::LossOfLife;
+                ref part :>> lossesRef = Losses::LossOfLife;
             }
         }
     }
@@ -74,16 +74,16 @@ package PaperExample {
             private import Interactions::*;
 
             #controlStructure part UshiftCS {
-                :>> controllersRef = (Ushift.ControlElectronics, Teleoperator, Passenger, OtherTraffic, VRUs, Environment);
-                :>> actuatorsRef = Ushift.DriveSystem;
-                :>> sensorsRef = Ushift.PerceptionSystem;
-                :>> processesRef = VehicleMovement;
-                :>> controlActionsRef = (OperationCommand, ManeuverCMD, BrakingForce, SteeringForce, IntentionToTravel, IntentionToLeave, EmergencyCall);
-                :>> feedbacksRef = (VehiclePosition, Acceleration, VehicleStatus, RoadIntegrity, RoadSigns, PositionVRUs, PositionOtherTraffic);
+                ref part :>> controllersRef = (Ushift.ControlElectronics, Teleoperator, Passenger, OtherTraffic, VRUs, Environment);
+                ref part :>> actuatorsRef = Ushift.DriveSystem;
+                ref part :>> sensorsRef = Ushift.PerceptionSystem;
+                ref part :>> processesRef = VehicleMovement;
+                ref item :>> controlActionsRef = (OperationCommand, ManeuverCMD, BrakingForce, SteeringForce, IntentionToTravel, IntentionToLeave, EmergencyCall);
+                ref item :>> feedbacksRef = (VehiclePosition, Acceleration, VehicleStatus, RoadIntegrity, RoadSigns, PositionVRUs, PositionOtherTraffic);
 
                 #controller part Ushift {
                     #controller part ControlElectronics {
-                        :>> processBeliefs = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
+                        part :>> processBeliefs = (VehicleLimitations, OperationalMode, UnderstandingOfPassengerBehavior, AssumptionAboutRoadInfrastructure, PassengerCapacity);
                         #processModel part VehicleLimitations;
                         #processModel part OperationalMode;
                         #processModel part UnderstandingOfPassengerBehavior;
@@ -95,11 +95,11 @@ package PaperExample {
                 }
 
                 #controllerHuman part Teleoperator {
-                    :>> mentalBeliefs = CurrentWorkload;
+                    part :>> mentalBeliefs = CurrentWorkload;
                     #mentalModel part CurrentWorkload;
                 }
                 #controllerHuman part Passenger {
-                    :>> mentalBeliefs = UnderstandingOfVehicleBehavior;
+                    part :>> mentalBeliefs = UnderstandingOfVehicleBehavior;
                     #mentalModel part UnderstandingOfVehicleBehavior;
                 }
                 #controller part OtherTraffic;
@@ -143,8 +143,8 @@ package PaperExample {
         package Contexts {
             // Context = ⟨SystemConditions⟩ & ⟨EnvironmentalConditions⟩
             #context part EmergencyStateDueToClosedOneWayStreet {
-                :>> systemConditions = EmergencyState;
-                :>> environmentalConditions = ClosedOneWayStreet;
+                ref part :>> systemConditions = EmergencyState;
+                ref part :>> environmentalConditions = ClosedOneWayStreet;
             }
             #sysCon part EmergencyState;
             #envCon part ClosedOneWayStreet;
@@ -153,12 +153,12 @@ package PaperExample {
             // UCA = <Source> & <Type> & <ControlAction> & <Receiver> & <Context> & [Hazards]
             #uca item TeleoperatorDoesNotProvideOperationCommand {
                 doc /* Teleoperator does not provide operation command when the automated vehicle is in an emergency situation */
-                :>> sourceRef = ModelControlStructure::Structure::UshiftCS.Teleoperator;
-                :>> controlActionRef = ModelControlStructure::Interactions::OperationCommand;
-                :>> typeRef = typesOfCAs.NotProvided;
-                :>> receiverRef = ModelControlStructure::Structure::UshiftCS.Ushift.ControlElectronics;
-                :>> contextRef = Contexts::EmergencyStateDueToClosedOneWayStreet;
-                :>> hazardsRef = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
+                ref part :>> sourceRef = ModelControlStructure::Structure::UshiftCS.Teleoperator;
+                ref item :>> controlActionRef = ModelControlStructure::Interactions::OperationCommand;
+                ref enum :>> typeRef = typesOfCAs.NotProvided;
+                ref part :>> receiverRef = ModelControlStructure::Structure::UshiftCS.Ushift.ControlElectronics;
+                ref part :>> contextRef = Contexts::EmergencyStateDueToClosedOneWayStreet;
+                ref part :>> hazardsRef = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;   
             }
         }
     }
@@ -166,16 +166,16 @@ package PaperExample {
     package IdentifyLSs {
         package CausalFactors {
             #cf part TeleoperatorNotInformed {
-                :>> factorRef = ModelControlStructure::Interactions::VehicleStatus;
-                :>> status = "not forwarded";
+                ref part :>> factorRef = ModelControlStructure::Interactions::VehicleStatus;
+                attribute :>> status = "not forwarded";
             }
         }
         package LossScenarios {
             #ls part TeleoperatorNotAwareOfVehiclesEmergencySituation {
                 // LS = <CausalFactors> & [UCAs]
                 doc /* The automated vehicle drives into a one way street which is closed and can not resolve the situation. However, the teleoperator is not aware that he is responsible for the vehicle. As a result, the teleoperator does not provide a resolving operation command */
-                :>> causalFactorsRef = CausalFactors::TeleoperatorNotInformed;
-                :>> ucasRef = IdentifyUCAs::UCAs::TeleoperatorDoesNotProvideOperationCommand;
+                ref part :>> causalFactorsRef = CausalFactors::TeleoperatorNotInformed;
+                ref item :>> ucasRef = IdentifyUCAs::UCAs::TeleoperatorDoesNotProvideOperationCommand;
             }
         }
     }

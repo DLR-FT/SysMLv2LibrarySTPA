@@ -60,9 +60,9 @@ library package LibrarySTPA {
                 Example:
                 <Automated vehicle> <loses control> resulting in [loss of life].
              */
-            ref part system[1];
+            ref part systemRef[1];
             attribute unsafeCondition[1] : String;
-            ref part linkedLosses[1..*] : Loss;
+            ref part lossesRef[1..*] : Loss;
         }
         part hazards[*] : Hazard;
     }
