@@ -3,20 +3,20 @@ package CameoViewsSTPA {
     private import KerML::*;
     private import SysML::*;
     private import DS_Views::*;
-    private import LibrarySTPA::MetaTypesSTPA::*;
+    private import LibrarySTPA::MetaTypesSTPA::**;
     calc getRef {
         in e : Element;
         in n : LiteralString;
-        in r = getRefUsageMember(e, n);
+        in r = getUsageMember(e, n);
         getRefOfFCE(r as FeatureChainExpression) ?? getRefOfOE(r as OperatorExpression) ?? getRefOfFRE(r as FeatureReferenceExpression)
     }
-    calc getRefUsageMember {
+    calc getUsageMember {
         in e : Element;
         in n : LiteralString;
         ((e as Usage).ownedFeature->ControlFunctions::select {
             in e;
             (e as Element).name == n
-        } as ReferenceUsage).ownedMember
+        } as Usage).ownedMember
     }
     calc getRefOfFCE {
         in e : FeatureChainExpression;
@@ -50,51 +50,60 @@ package CameoViewsSTPA {
             view UCA : CoreViews::ColumnByFeatureView :> column {
                 ref item :>> columnFeature = featureTarget meta Feature;
             }
+            view Documentation : CoreViews::ColumnByExpressionView :> column {
+                attribute :>> isMultiline default true;
+                render rendering : CoreViews::StringCellRendering :>> asTableCell {
+                    calc :>> getValue {
+                        in rowElement : Element;
+                        (rowElement.ownedElement as Comment).body
+                    }
+                }
+            }
             view ContextRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "contextRef") as Metaobject
+                        (getRef(rowElement, "contextRef") as Feature).declaredName
                     }
                 }
             }
             view SourceRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "sourceRef") as Metaobject
+                        (getRef(rowElement, "sourceRef") as Feature).declaredName
                     }
                 }
             }
             view ControlActionRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "controlActionRef") as Metaobject
+                        (getRef(rowElement, "controlActionRef") as Feature).declaredName
                     }
                 }
             }
             view TypeRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "typeRef")
+                        (getRef(rowElement, "typeRef") as Feature).declaredName
                     }
                 }
             }
             view ReceiverRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "receiverRef") as Metaobject
+                        (getRef(rowElement, "receiverRef") as Feature).declaredName
                     }
                 }
             }
             view HazardsRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "hazardsRef") as Metaobject
+                        (getRef(rowElement, "hazardsRef") as Feature).declaredName
                     }
                 }
             }
@@ -105,19 +114,28 @@ package CameoViewsSTPA {
             view LS : CoreViews::ColumnByFeatureView :> column {
                 ref item :>> columnFeature = featureTarget meta Feature;
             }
+            view Documentation : CoreViews::ColumnByExpressionView :> column {
+                attribute :>> isMultiline default true;
+                render rendering : CoreViews::StringCellRendering :>> asTableCell {
+                    calc :>> getValue {
+                        in rowElement : Element;
+                        (rowElement.ownedElement as Comment).body
+                    }
+                }
+            }
             view CausalFactorsRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "causalFactorsRef") as Metaobject
+                        (getRef(rowElement, "causalFactorsRef") as Feature).declaredName
                     }
                 }
             }
             view UCAsRef : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in :>> rowElement;
-                        getRef(rowElement, "ucasRef") as Metaobject
+                        (getRef(rowElement, "ucasRef") as Feature).declaredName
                     }
                 }
             }
