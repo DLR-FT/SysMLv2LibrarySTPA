@@ -81,7 +81,7 @@ library package LibrarySTPA {
             ref part controllersRef [*] : Controller;
             ref flow controlActionsRef [*] : ControlAction;
             ref flow feedbacksRef [*] : Feedback;
-            ref item otherInformationsRef [*] : OtherInformation;
+            ref flow otherInformationsRef [*] : OtherInformation;
         }
         part controlStructures [*] : ControlStructure;
         part def Controller {
@@ -238,7 +238,7 @@ library package LibrarySTPA {
             ProvidedOutOfOrder;
         }
         enum typesOfCAs [*] : TypesOfCA;
-        flow def UnsafeControlAction :> ModelControlStructure::ControlAction {
+        occurrence def UnsafeControlAction {
             doc
             /* Definition:
              * Represents a control action that, in a particular context, will lead to a hazard, 
@@ -256,13 +256,13 @@ library package LibrarySTPA {
             ref flow controlActionRef [1] : ModelControlStructure::ControlAction;
             ref part receiverRef [1] : ModelControlStructure::Process, ModelControlStructure::Controller;
             ref occurrence contextRef [1] : Context;
-            ref part hazardsRef [1..*] : DefineAnalysisPurpose::Hazard;
+            ref occurrence hazardsRef [1..*] : DefineAnalysisPurpose::Hazard;
         }
-        flow unsafeControlActions [*] : UnsafeControlAction;
-        flow def UnwantedControlAction :> UnsafeControlAction;
-        flow unwantedControlActions [*] : UnwantedControlAction;
-        flow def UnsecureControlAction :> UnsafeControlAction;
-        flow unsecureControlAction [*] : UnsecureControlAction;
+        occurrence unsafeControlActions [*] : UnsafeControlAction;
+        occurrence def UnwantedControlAction :> UnsafeControlAction;
+        occurrence unwantedControlActions [*] : UnwantedControlAction;
+        occurrence def UnsecureControlAction :> UnsafeControlAction;
+        occurrence unsecureControlAction [*] : UnsecureControlAction;
     }
     package IdentifyLSs {
         doc
@@ -298,7 +298,7 @@ library package LibrarySTPA {
              * <Awareness of supervised vehicles> & <is incorrect> leading to [UCA2]  
              */
             ref occurrence causalFactorsRef [1..*] : IdentifyLSs::CausalFactor;
-            ref flow ucasRef [1..*] : IdentifyUCAs::UnsafeControlAction;
+            ref occurrence ucasRef [1..*] : IdentifyUCAs::UnsafeControlAction;
         }
         occurrence lossScenarios [*] : LossScenario;
     }
@@ -306,58 +306,58 @@ library package LibrarySTPA {
         doc /* This package contains all the meta types for the STPA library elements
          */
         metadata def <loss> :> Metaobjects::SemanticMetadata {
-            :>> baseType = DefineAnalysisPurpose::losses meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = DefineAnalysisPurpose::losses meta SysML::OccurrenceUsage;
         }
         metadata def <hazard> :> Metaobjects::SemanticMetadata {
-            :>> baseType = DefineAnalysisPurpose::hazards meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = DefineAnalysisPurpose::hazards meta SysML::OccurrenceUsage;
         }
         metadata def <controlStructure> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::controlStructures meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::controlStructures meta SysML::PartUsage;
         }
         metadata def <controller> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::controllers meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::controllers meta SysML::PartUsage;
         }
         metadata def <controllerHuman> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::humanControllers meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::humanControllers meta SysML::PartUsage;
         }
         metadata def <actuator> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::actuators meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::actuators meta SysML::PartUsage;
         }
         metadata def <sensor> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::sensors meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::sensors meta SysML::PartUsage;
         }
         metadata def <process> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::processes meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::processes meta SysML::PartUsage;
         }
         metadata def <controlAction> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::controlActions meta SysML::Systems::FlowUsage;
+            :>> baseType = ModelControlStructure::controlActions meta SysML::FlowUsage;
         }
         metadata def <feedback> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::feedbacks meta SysML::Systems::FlowUsage;
+            :>> baseType = ModelControlStructure::feedbacks meta SysML::FlowUsage;
         }
         metadata def <processModel> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::processModels meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::processModels meta SysML::PartUsage;
         }
         metadata def <mentalModel> :> Metaobjects::SemanticMetadata {
-            :>> baseType = ModelControlStructure::mentalModels meta SysML::Systems::PartUsage;
+            :>> baseType = ModelControlStructure::mentalModels meta SysML::PartUsage;
         }
         metadata def <uca> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::unsafeControlActions meta SysML::Systems::FlowUsage;
+            :>> baseType = IdentifyUCAs::unsafeControlActions meta SysML::OccurrenceUsage;
         }
         metadata def <envCon> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::environmentalConditions meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = IdentifyUCAs::environmentalConditions meta SysML::OccurrenceUsage;
         }
         metadata def <sysCon> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::systemConditions meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = IdentifyUCAs::systemConditions meta SysML::OccurrenceUsage;
         }
         metadata def <context> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::contexts meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = IdentifyUCAs::contexts meta SysML::OccurrenceUsage;
         }
         metadata def <cf> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyLSs::causalFactors meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = IdentifyLSs::causalFactors meta SysML::OccurrenceUsage;
         }
         metadata def <ls> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyLSs::lossScenarios meta SysML::Systems::OccurrenceUsage;
+            :>> baseType = IdentifyLSs::lossScenarios meta SysML::OccurrenceUsage;
         }
     }
     package ViewsAndViewpoints {

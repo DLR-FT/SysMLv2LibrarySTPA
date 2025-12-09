@@ -71,19 +71,19 @@ package PaperExample {
             #controller part VRUs;
             #controller part Environment;
             #process part VehicleMovement;
+            #controlAction flow teleoperatorCMD from UshiftCS.Teleoperator to UshiftCS.Ushift.ControlElectronics;
+            #feedback flow vehicleHealth from Ushift.ControlElectronics to UshiftCS.Teleoperator;
+            #feedback flow vehicleStatus from Ushift.ControlElectronics to UshiftCS.Passenger;
+            #controlAction flow maneuverCMD from Ushift.ControlElectronics to Ushift.DriveSystem;
+            #controlAction flow vehicleForces from Ushift.DriveSystem to UshiftCS.VehicleMovement;
+            #feedback flow vehicleMovement from UshiftCS.VehicleMovement to Ushift.PerceptionSystem;
+            #feedback flow roadPerception from UshiftCS.Environment to Ushift.PerceptionSystem;
+            #feedback flow vruPerception from UshiftCS.VRUs to Ushift.PerceptionSystem;
+            #feedback flow otherTrafficPerception from UshiftCS.OtherTraffic to Ushift.PerceptionSystem;
+            #feedback flow vehiclePerception from Ushift.PerceptionSystem to Ushift.ControlElectronics;
+            #controlAction flow travelCMD from UshiftCS.Passenger to Ushift.ControlElectronics;
             doc /* This shows a simplified control structure of DLR's Ushift concept vehicle using the defined element types of the SysML v2 library for SysML v2*/
         }
-        #controlAction flow teleoperatorCMD from UshiftCS.Teleoperator to UshiftCS.Ushift.ControlElectronics;
-        #feedback flow vehicleHealth from UshiftCS::Ushift.ControlElectronics to UshiftCS.Teleoperator;
-        #feedback flow vehicleStatus from UshiftCS::Ushift.ControlElectronics to UshiftCS.Passenger;
-        #controlAction flow maneuverCMD from UshiftCS::Ushift.ControlElectronics to UshiftCS::Ushift.DriveSystem;
-        #controlAction flow vehicleForces from UshiftCS::Ushift.DriveSystem to UshiftCS.VehicleMovement;
-        #feedback flow vehicleMovement from UshiftCS.VehicleMovement to UshiftCS::Ushift.PerceptionSystem;
-        #feedback flow roadPerception from UshiftCS.Environment to UshiftCS::Ushift.PerceptionSystem;
-        #feedback flow vruPerception from UshiftCS.VRUs to UshiftCS::Ushift.PerceptionSystem;
-        #feedback flow otherTrafficPerception from UshiftCS.OtherTraffic to UshiftCS::Ushift.PerceptionSystem;
-        #feedback flow vehiclePerception from UshiftCS::Ushift.PerceptionSystem to UshiftCS::Ushift.ControlElectronics;
-        #controlAction flow travelCMD from UshiftCS.Passenger to UshiftCS::Ushift.ControlElectronics;
     }
     package IdentifyUCAs {
         package Contexts {
@@ -95,10 +95,10 @@ package PaperExample {
             #envCon occurrence ClosedOneWayStreet;
         }
         package UCAs {
-            #uca flow TeleoperatorDoesNotProvideOperationCommand {
+            #uca occurrence TeleoperatorDoesNotProvideOperationCommand {
                 doc /* Teleoperator does not provide operation command when the automated vehicle is in an emergency situation */
                 :>> sourceRef = ModelControlStructure::UshiftCS.Teleoperator;
-                :>> controlActionRef = ModelControlStructure::teleoperatorCMD;
+                :>> controlActionRef = ModelControlStructure::UshiftCS.teleoperatorCMD;
                 :>> typeRef = typesOfCAs.NotProvided;
                 :>> receiverRef = ModelControlStructure::UshiftCS::Ushift.ControlElectronics;
                 :>> contextRef = Contexts::EmergencyStateDueToClosedOneWayStreet;
@@ -109,7 +109,7 @@ package PaperExample {
     package IdentifyLSs {
         package CausalFactors {
             #cf occurrence TeleoperatorNotInformed {
-                :>> factorRef = ModelControlStructure::vehicleStatus;
+                :>> factorRef = ModelControlStructure::UshiftCS.vehicleStatus;
                 attribute :>> status = "not forwarded";
             }
         }
@@ -122,11 +122,7 @@ package PaperExample {
         }
     }
     package Views {
-        private import CameoViewsSTPA::**;
-        view ShowLosses : DefineLosses::LossTree {
-            expose DefineAnalysisPurpose::Losses::*;
-        }
-        // Views in Cameo //
+        //private import CameoViewsSTPA::**;
         //view HazardsAndLosses : HazardsTable {
         //    expose PaperExample::DefineAnalysisPurpose::**;
         //    filter @hazard;
@@ -139,5 +135,8 @@ package PaperExample {
         //    expose PaperExample::IdentifyLSs::**;
         //    filter @ls;
         //}
+        view ShowLosses : DefineLosses::LossTree {
+            expose DefineAnalysisPurpose::Losses::*;
+        }
     }
 }
