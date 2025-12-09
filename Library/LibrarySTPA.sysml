@@ -18,7 +18,7 @@ library package LibrarySTPA {
          * The first step covers the definition of losses and hazards
          * as the baseline for the analysis.
          */
-        part def Loss {
+        occurrence def Loss {
             doc
             /* Definition:
              * Represent the act or fact of being unable to keep or
@@ -37,12 +37,12 @@ library package LibrarySTPA {
             attribute stateOfConcern : StatesOfConcern;
             ref concern stakeholderConcern;
         }
-        part losses [*] : Loss;
+        occurrence losses [*] : Loss;
         enum def StatesOfConcern {
             'Loss of';
             'Occurrence of';
         }
-        part def Hazard {
+        occurrence def Hazard {
             doc
             /* Definition:
              * Represents a system state or set of conditions that together with a 
@@ -56,9 +56,9 @@ library package LibrarySTPA {
              */
             ref part systemRef [1];
             attribute unsafeCondition [1] : String;
-            ref part lossesRef [1..*] : Loss;
+            ref occurrence lossesRef [1..*] : Loss;
         }
-        part hazards [*] : Hazard;
+        occurrence hazards [*] : Hazard;
     }
     package ModelControlStructure {
         doc
@@ -204,7 +204,7 @@ library package LibrarySTPA {
         /* This package contains the elements related to the third step of the STPA. 
          * The third step covers the identification of unsafe control actions.
          */
-        part def Context {
+        occurrence def Context {
             doc
             /* Definition:
              * Conditions where a control action may be unsafe.
@@ -214,14 +214,14 @@ library package LibrarySTPA {
              * Environmental Context = A road closure within a one way street.
              * System Context = An automated vehicle is in an emergency state.
              */
-            ref part envConRef : EnvironmentalCondition;
-            ref part sysConRef : SystemCondition;
+            ref occurrence envConRef : EnvironmentalCondition;
+            ref occurrence sysConRef : SystemCondition;
         }
-        part contexts [*] : Context;
-        part def EnvironmentalCondition;
-        part environmentalConditions [*] : EnvironmentalCondition;
-        part def SystemCondition;
-        part systemConditions [*] : SystemCondition;
+        occurrence contexts [*] : Context;
+        occurrence def EnvironmentalCondition;
+        occurrence environmentalConditions [*] : EnvironmentalCondition;
+        occurrence def SystemCondition;
+        occurrence systemConditions [*] : SystemCondition;
         enum def TypesOfCA {
             doc
             /* Definition:
@@ -255,7 +255,7 @@ library package LibrarySTPA {
             enum typeRef [1] : TypesOfCA;
             ref flow controlActionRef [1] : ModelControlStructure::ControlAction;
             ref part receiverRef [1] : ModelControlStructure::Process, ModelControlStructure::Controller;
-            ref part contextRef [1] : Context;
+            ref occurrence contextRef [1] : Context;
             ref part hazardsRef [1..*] : DefineAnalysisPurpose::Hazard;
         }
         flow unsafeControlActions [*] : UnsafeControlAction;
@@ -269,7 +269,7 @@ library package LibrarySTPA {
         /* This package contains the elements related to the fourth step of the STPA. 
          * The fourth step covers the identification of loss scenarios. 
          */
-        part def CausalFactor {
+        occurrence def CausalFactor {
             doc
             /* Definition:
              * Represents a circumstance, fact, or influence contributing to a causal scenario. 
@@ -279,13 +279,13 @@ library package LibrarySTPA {
              * Interaction = <Teleoperator command> & <not forwarded>.
              * Process model = <Awareness of supervised vehicles> & <is incorrect>.
              */
-            ref item factorRef [1] : ModelControlStructure::ControlAction, ModelControlStructure::Feedback, ModelControlStructure::ProcessModel,
+            ref occurrence factorRef [1] : ModelControlStructure::ControlAction, ModelControlStructure::Feedback, ModelControlStructure::ProcessModel,
             ModelControlStructure::MentalModel, IdentifyUCAs::EnvironmentalCondition, IdentifyUCAs::SystemCondition;
 
             attribute status : String;
         }
-        part causalFactors [*] : CausalFactor;
-        part def LossScenario {
+        occurrence causalFactors [*] : CausalFactor;
+        occurrence def LossScenario {
             doc
             /* Definition:
              * Represents the causal factors that can lead to unsafe control actions and to hazards.
@@ -297,19 +297,19 @@ library package LibrarySTPA {
              * <Teleoperator command> & <not forwarded> leading to [UCA1]
              * <Awareness of supervised vehicles> & <is incorrect> leading to [UCA2]  
              */
-            ref part causalFactorsRef [1..*] : IdentifyLSs::CausalFactor;
+            ref occurrence causalFactorsRef [1..*] : IdentifyLSs::CausalFactor;
             ref flow ucasRef [1..*] : IdentifyUCAs::UnsafeControlAction;
         }
-        part lossScenarios [*] : LossScenario;
+        occurrence lossScenarios [*] : LossScenario;
     }
     package MetaTypesSTPA {
         doc /* This package contains all the meta types for the STPA library elements
          */
         metadata def <loss> :> Metaobjects::SemanticMetadata {
-            :>> baseType = DefineAnalysisPurpose::losses meta SysML::Systems::PartUsage;
+            :>> baseType = DefineAnalysisPurpose::losses meta SysML::Systems::OccurrenceUsage;
         }
         metadata def <hazard> :> Metaobjects::SemanticMetadata {
-            :>> baseType = DefineAnalysisPurpose::hazards meta SysML::Systems::PartUsage;
+            :>> baseType = DefineAnalysisPurpose::hazards meta SysML::Systems::OccurrenceUsage;
         }
         metadata def <controlStructure> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::controlStructures meta SysML::Systems::PartUsage;
@@ -345,19 +345,19 @@ library package LibrarySTPA {
             :>> baseType = IdentifyUCAs::unsafeControlActions meta SysML::Systems::FlowUsage;
         }
         metadata def <envCon> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::environmentalConditions meta SysML::Systems::PartUsage;
+            :>> baseType = IdentifyUCAs::environmentalConditions meta SysML::Systems::OccurrenceUsage;
         }
         metadata def <sysCon> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::systemConditions meta SysML::Systems::PartUsage;
+            :>> baseType = IdentifyUCAs::systemConditions meta SysML::Systems::OccurrenceUsage;
         }
         metadata def <context> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyUCAs::contexts meta SysML::Systems::PartUsage;
+            :>> baseType = IdentifyUCAs::contexts meta SysML::Systems::OccurrenceUsage;
         }
         metadata def <cf> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyLSs::causalFactors meta SysML::Systems::PartUsage;
+            :>> baseType = IdentifyLSs::causalFactors meta SysML::Systems::OccurrenceUsage;
         }
         metadata def <ls> :> Metaobjects::SemanticMetadata {
-            :>> baseType = IdentifyLSs::lossScenarios meta SysML::Systems::PartUsage;
+            :>> baseType = IdentifyLSs::lossScenarios meta SysML::Systems::OccurrenceUsage;
         }
     }
     package ViewsAndViewpoints {

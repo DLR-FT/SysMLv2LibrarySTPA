@@ -23,18 +23,18 @@ package PaperExample {
             }
         }
         package Losses {
-            #loss part LossOfCustomerSatisfaction {
+            #loss occurrence LossOfCustomerSatisfaction {
                 :>> stakeholderConcern = Stakeholders::Reputation;
             }
-            #loss part LossOfLife {
+            #loss occurrence LossOfLife {
                 :>> stakeholderConcern = Stakeholders::Safety;
             }
         }
         package Hazards {
-            #hazard part VehicleCanNotExecuteMission {
+            #hazard occurrence VehicleCanNotExecuteMission {
                 :>> lossesRef = Losses::LossOfCustomerSatisfaction;
             }
-            #hazard part VehicleTooCloseToPeople {
+            #hazard occurrence VehicleTooCloseToPeople {
                 :>> lossesRef = Losses::LossOfLife;
             }
         }
@@ -87,19 +87,19 @@ package PaperExample {
     }
     package IdentifyUCAs {
         package Contexts {
-            #context part EmergencyStateDueToClosedOneWayStreet {
+            #context occurrence EmergencyStateDueToClosedOneWayStreet {
                 :>> systemConditions = EmergencyState;
                 :>> environmentalConditions = ClosedOneWayStreet;
             }
-            #sysCon part EmergencyState;
-            #envCon part ClosedOneWayStreet;
+            #sysCon occurrence EmergencyState;
+            #envCon occurrence ClosedOneWayStreet;
         }
         package UCAs {
-            #uca item TeleoperatorDoesNotProvideOperationCommand {
+            #uca flow TeleoperatorDoesNotProvideOperationCommand {
                 doc /* Teleoperator does not provide operation command when the automated vehicle is in an emergency situation */
                 :>> sourceRef = ModelControlStructure::UshiftCS.Teleoperator;
                 :>> controlActionRef = ModelControlStructure::teleoperatorCMD;
-                enum :>> typeRef = typesOfCAs.NotProvided;
+                :>> typeRef = typesOfCAs.NotProvided;
                 :>> receiverRef = ModelControlStructure::UshiftCS::Ushift.ControlElectronics;
                 :>> contextRef = Contexts::EmergencyStateDueToClosedOneWayStreet;
                 :>> hazardsRef = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;
@@ -108,13 +108,13 @@ package PaperExample {
     }
     package IdentifyLSs {
         package CausalFactors {
-            #cf part TeleoperatorNotInformed {
+            #cf occurrence TeleoperatorNotInformed {
                 :>> factorRef = ModelControlStructure::vehicleStatus;
                 attribute :>> status = "not forwarded";
             }
         }
         package LossScenarios {
-            #ls part TeleoperatorNotAwareOfVehiclesEmergencySituation {
+            #ls occurrence TeleoperatorNotAwareOfVehiclesEmergencySituation {
                 doc /* The automated vehicle drives into a one way street which is closed and can not resolve the situation. However, the teleoperator is not aware that he is responsible for the vehicle. As a result, the teleoperator does not provide a resolving operation command */
                 :>> causalFactorsRef = CausalFactors::TeleoperatorNotInformed;
                 :>> ucasRef = IdentifyUCAs::UCAs::TeleoperatorDoesNotProvideOperationCommand;
@@ -126,6 +126,7 @@ package PaperExample {
         view ShowLosses : DefineLosses::LossTree {
             expose DefineAnalysisPurpose::Losses::*;
         }
+        // Views in Cameo //
         //view HazardsAndLosses : HazardsTable {
         //    expose PaperExample::DefineAnalysisPurpose::**;
         //    filter @hazard;
