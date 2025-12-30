@@ -251,10 +251,10 @@ library package LibrarySTPA {
              * UCA = The <teleoperator> <does not provide> the <operation command> to the <automated vehicle> 
              * <during a complex traffic situation> leading to [H1 - the vehicle not being able to continue its mission].
              */
-            ref part sourceRef [1] : ModelControlStructure::Controller, ModelControlStructure::Actuator;
+            ref part sourceRef [1];
             enum typeRef [1] : TypesOfCA;
             ref flow controlActionRef [1] : ModelControlStructure::ControlAction;
-            ref part receiverRef [1] : ModelControlStructure::Process, ModelControlStructure::Controller;
+            ref part receiverRef [1];
             ref occurrence contextRef [1] : Context;
             ref occurrence hazardsRef [1..*] : DefineAnalysisPurpose::Hazard;
         }
@@ -279,9 +279,7 @@ library package LibrarySTPA {
              * Interaction = <Teleoperator command> & <not forwarded>.
              * Process model = <Awareness of supervised vehicles> & <is incorrect>.
              */
-            ref occurrence factorRef [1] : ModelControlStructure::ControlAction, ModelControlStructure::Feedback, ModelControlStructure::ProcessModel,
-            ModelControlStructure::MentalModel, IdentifyUCAs::EnvironmentalCondition, IdentifyUCAs::SystemCondition;
-
+            ref occurrence factorRef [1];
             attribute status : String;
         }
         occurrence causalFactors [*] : CausalFactor;
