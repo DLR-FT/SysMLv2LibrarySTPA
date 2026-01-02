@@ -295,7 +295,7 @@ library package LibrarySTPA {
              * <Teleoperator command> & <not forwarded> leading to [UCA1]
              * <Awareness of supervised vehicles> & <is incorrect> leading to [UCA2]  
              */
-            ref occurrence causalFactorsRef [1..*] : IdentifyLSs::CausalFactor;
+            ref occurrence causalFactorsRef [1..*];
             ref occurrence ucasRef [1..*] : IdentifyUCAs::UnsafeControlAction;
         }
         occurrence lossScenarios [*] : LossScenario;
