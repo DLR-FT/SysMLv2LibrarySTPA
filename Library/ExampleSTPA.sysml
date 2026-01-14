@@ -102,7 +102,7 @@ package PaperExample {
                 ref part :>> sourceRef = ModelControlStructure::UshiftCS.Teleoperator;
                 ref flow :>> controlActionRef = ModelControlStructure::UshiftCS.teleoperatorCMD;
                 enum :>> typeRef = typesOfCAs.NotProvided;
-                ref part :>> receiverRef = ModelControlStructure::UshiftCS.Ushift.ControlElectronics;
+                ref part :>> receiverRef = ModelControlStructure::UshiftCS::Ushift.ControlElectronics;
                 ref occurrence :>> contextRef = Contexts::EmergencyStateDueToClosedOneWayStreet;
                 ref occurrence :>> hazardsRef = DefineAnalysisPurpose::Hazards::VehicleCanNotExecuteMission;
             }
