@@ -83,8 +83,13 @@ library package LibrarySTPA {
             ref flow feedbacksRef [*] : Feedback;
             ref flow otherInformationsRef [*] : OtherInformation;
         }
+        abstract part def ControlStructurePart {
+            doc /* Overarching type that covers properties that are common for each control structure part */
+            in item interactionsIn;
+            out item interactionsOut;
+        }
         part controlStructures [*] : ControlStructure;
-        part def Controller {
+        part def Controller :> ControlStructurePart {
             doc
             /* Definition:
              * Represents an entity that forms beliefs, makes decisions, and provides control actions to achieve or maintain a state or goal.
@@ -129,7 +134,7 @@ library package LibrarySTPA {
              */
         }
         part mentalModels [*] : MentalModel;
-        part def Actuator {
+        part def Actuator :> ControlStructurePart {
             doc
             /* Definition:
              * Represents an entity in the control structure which executes a control action by a controller.
@@ -139,7 +144,7 @@ library package LibrarySTPA {
              */
         }
         part actuators [*] : Actuator;
-        part def Sensor {
+        part def Sensor :> ControlStructurePart {
             doc
             /* Definition:
              * Represents an entitiy in the control structure which provides feedback to a controller.
@@ -149,7 +154,7 @@ library package LibrarySTPA {
              */
         }
         part sensors [*] : Sensor;
-        part def Process {
+        part def Process :> ControlStructurePart {
             doc
             /* Definition:
              * Represents any process, such as a physical process, a virtual process, a controller, or other processes 
@@ -303,23 +308,42 @@ library package LibrarySTPA {
     package MetaTypesSTPA {
         doc /* This package contains all the meta types for the STPA library elements
          */
-        #loss part lossExample;
+        #loss part lossExample {
+            attribute :>> stateOfConcern;
+            ref concern :>> stakeholderConcern;
+        }
         metadata def <loss> :> Metaobjects::SemanticMetadata {
             :>> baseType = DefineAnalysisPurpose::losses meta SysML::Systems::OccurrenceUsage;
         }
-        #hazard part hazardExample;
+        #hazard part hazardExample {
+            ref part :>> systemRef;
+            attribute :>> unsafeCondition;
+            ref occurrence :>> lossesRef;
+        }
         metadata def <hazard> :> Metaobjects::SemanticMetadata {
             :>> baseType = DefineAnalysisPurpose::hazards meta SysML::Systems::OccurrenceUsage;
         }
-        #controlStructure part controlStructureExample;
+        #controlStructure part controlStructureExample {
+            ref part :>> actuatorsRef;
+            ref part :>> sensorsRef;
+            ref part :>> processesRef;
+            ref part :>> controllersRef;
+            ref flow :>> controlActionsRef;
+            ref flow :>> feedbacksRef;
+            ref flow :>> otherInformationsRef;
+        }
         metadata def <controlStructure> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::controlStructures meta SysML::Systems::PartUsage;
         }
-        #controller part controllerExample;
+        #controller part controllerExample {
+            ref part :>> processBeliefs;
+        }
         metadata def <controller> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::controllers meta SysML::Systems::PartUsage;
         }
-        #controllerHuman part controllerHumanExample;
+        #controllerHuman part controllerHumanExample {
+            ref part :>> mentalBeliefs;
+        }
         metadata def <controllerHuman> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::humanControllers meta SysML::Systems::PartUsage;
         }
@@ -351,7 +375,14 @@ library package LibrarySTPA {
         metadata def <mentalModel> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::mentalModels meta SysML::Systems::PartUsage;
         }
-        #uca occurrence ucaExample;
+        #uca occurrence ucaExample {
+            ref part :>> sourceRef;
+            enum :>> typeRef;
+            ref flow :>> controlActionRef;
+            ref part :>> receiverRef;
+            ref occurrence :>> contextRef;
+            ref occurrence :>> hazardsRef;
+        }
         metadata def <uca> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyUCAs::unsafeControlActions meta SysML::Systems::OccurrenceUsage;
         }
@@ -363,15 +394,24 @@ library package LibrarySTPA {
         metadata def <sysCon> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyUCAs::systemConditions meta SysML::Systems::OccurrenceUsage;
         }
-        #context occurrence contextExample;
+        #context occurrence contextExample {
+            ref occurrence :>> envConRef;
+            ref occurrence :>> sysConRef;
+        }
         metadata def <context> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyUCAs::contexts meta SysML::Systems::OccurrenceUsage;
         }
-        #cf occurrence causalFactorExample;
+        #cf occurrence causalFactorExample {
+            ref occurrence :>> factorRef;
+            attribute :>> status;
+        }
         metadata def <cf> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyLSs::causalFactors meta SysML::Systems::OccurrenceUsage;
         }
-        #ls occurrence lossScenarioExample;
+        #ls occurrence lossScenarioExample {
+            ref occurrence :>> causalFactorsRef;
+            ref occurrence :>> ucasRef;
+        }
         metadata def <ls> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyLSs::lossScenarios meta SysML::Systems::OccurrenceUsage;
         }
