@@ -308,14 +308,14 @@ library package LibrarySTPA {
     package MetaTypesSTPA {
         doc /* This package contains all the meta types for the STPA library elements
          */
-        #loss part lossExample {
+        #loss occurrence lossExample {
             attribute :>> stateOfConcern;
             ref concern :>> stakeholderConcern;
         }
         metadata def <loss> :> Metaobjects::SemanticMetadata {
             :>> baseType = DefineAnalysisPurpose::losses meta SysML::Systems::OccurrenceUsage;
         }
-        #hazard part hazardExample {
+        #hazard occurrence hazardExample {
             ref part :>> systemRef;
             attribute :>> unsafeCondition;
             ref occurrence :>> lossesRef;
