@@ -6,8 +6,9 @@ This repo contains:
 - A library for STPA in the textual notation of SysML v2 - [LinkToLibrary](Library/LibrarySTPA.sysml)
 - A corresponding example project that uses the library - [LinkToExample](Library/ExampleSTPA.sysml)
 - A jupyter notebook version that showcases the application - [LinkToNotebook](Jupyter/LibrarySTPA.ipynb)
+- A Cameo specific extension that includes advanced views and diagram definitions - [LinkToCameoViews](Library/CameoViewsSTPA.sysml)
 
-The library is devided into six packages. For each of the four STPA steps, one dedicated package is used. The fifth and sixth package includes the metadata types and view/viewpoint definitions that facilitate the application of the library.
+The library is divided into six packages. For each of the four STPA steps, one dedicated package is used. The fifth and sixth package includes the metadata types and view/viewpoint definitions that facilitate the application of the library.
 
 ![Library Packages 1 to 3](Images/LibraryPackages1to3.svg)
 ![Library Packages 4 to 6](Images/LibraryPackages4to6.svg)
@@ -16,13 +17,24 @@ The library is devided into six packages. For each of the four STPA steps, one d
 
 # Usage
 
-The LibrarySTPA.sysml and ExampleSTPA.sysml files of the library can be used with any SysML v2 tool. The LibrarySTPA.ipynb file is recommended to be used in combination with the pilot-implementation for [Jupyter](https://github.com/Systems-Modeling/SysML-v2-Release/tree/master/install/jupyter). Some open-source tools for trying out the library are:
+The LibrarySTPA.sysml and ExampleSTPA.sysml files of the library can be used with any SysML v2 tool. The LibrarySTPA.ipynb file is recommended to be used in combination with the pilot-implementation for [Jupyter](https://github.com/Systems-Modeling/SysML-v2-Release/tree/master/install/jupyter). Some tools for trying out the library are:
 
 - Jupyter - [LinkToGithub](https://github.com/Systems-Modeling/SysML-v2-Release/tree/master/install/jupyter)
 - SysIDE (VSC Plugin) - [LinkToWebsite](https://sensmetry.com/syside/)
-- SysON [LinkToWebsite](https://mbse-syson.org/)
+- Cameo Community Edition - [LinkToWebsite](https://discover.3ds.com/free-catia-sysmlv2-community-edition)
+- SysON - [LinkToWebsite](https://mbse-syson.org/)
 
-More information on the goals and conecepts behind the library is planned to be published in a complementary article.
+For [Cameo](https://discover.3ds.com/free-catia-sysmlv2-community-edition) users, advanced tool features allow to define and use specific extensions such as:
+
+[STPA-specific diagrams](Library/CameoViewsSTPA.sysml) that support the graphical creation of library elements
+
+![Tabular View Examples](Images/DomainSpecificDiagram.png)
+
+[Tabular views](Library/CameoViewsSTPA.sysml) to show: relations between hazards and losses, or the model-based composition of UCAs and LSs
+
+![Tabular View Examples](Images/TabularViewExamples.png)
+
+More information on the goals and concepts behind the library is available in the corresponding [open-access article](https://doi.org/10.1002/sys.70057)
 
 -----------------------------------------------------------------------------------------------
 
@@ -37,6 +49,7 @@ Recommended STPA Literature:
 - [Podcasts about STPA](https://safetycorner.wagnerflorian.eu/index.php/en/)
 
 Related References from Contributors:
+- [**Extending SysML v2 for Safety - Open-Source Library for the System-Theoretic Process Analysis**](https://doi.org/10.1002/sys.70057)
 - [A System-Theoretic Assurance Framework for Safety-Driven Systems Engineering](https://link.springer.com/article/10.1007/s10270-024-01209-6)
 - [Integrating Safety into MBSE Processes with Formal Methods](https://ieeexplore.ieee.org/document/9594315)
 - [Evaluating System Architecture Safety in Early Phases of Development with MBSE and STPA](https://ieeexplore.ieee.org/document/9582542)
