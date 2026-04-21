@@ -40,22 +40,18 @@ More information on the goals and concepts behind the library is available in th
 
 # Related Material
 
+Related References from Contributors:
+- [**Extending SysML v2 for Safety - Open-Source Library for the System-Theoretic Process Analysis**](https://doi.org/10.1002/sys.70057)
+- [A System-Theoretic Assurance Framework for Safety-Driven Systems Engineering](https://doi.org/10.1007/s10270-024-01209-6)
+- [Tailoring STPA for SOTIF: Terminology Mapping and Methodological Extension](https://doi.org/10.1109/ACCESS.2025.3636728)
+
 Recommended STPA Literature:
 - [MIT Partnership for Systems Approaches to Safety and Security (PSASS)](http://psas.scripts.mit.edu/home/materials/)
 - [STPA Handbook 2018](http://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf)
-- [Engineering A Safer World](https://direct.mit.edu/books/book/2908/Engineering-a-Safer-WorldSystems-Thinking-Applied)
-- [STPA Standard for All Industries](https://www.sae.org/standards/content/j3307_202503/)
-- [SAE J3187 STPA Guidance](https://www.sae.org/standards/content/j3187_202202/)
+- [Engineering A Safer World](https://doi.org/10.7551/mitpress/8179.001.0001)
+- [STPA Standard for All Industries](https://doi.org/10.4271/J3307_202503)
+- [SAE J3187 STPA Guidance](https://doi.org/10.4271/J3187_202305)
 - [Podcasts about STPA](https://safetycorner.wagnerflorian.eu/index.php/en/)
-
-Related References from Contributors:
-- [**Extending SysML v2 for Safety - Open-Source Library for the System-Theoretic Process Analysis**](https://doi.org/10.1002/sys.70057)
-- [A System-Theoretic Assurance Framework for Safety-Driven Systems Engineering](https://link.springer.com/article/10.1007/s10270-024-01209-6)
-- [Integrating Safety into MBSE Processes with Formal Methods](https://ieeexplore.ieee.org/document/9594315)
-- [Evaluating System Architecture Safety in Early Phases of Development with MBSE and STPA](https://ieeexplore.ieee.org/document/9582542)
-- [Model-Based STPA: Enabling Safety Analysis Coverage Assessment with Formalization](https://ieeexplore.ieee.org/document/9925883)
-- [Model-Based STPA: Towards Agile Safety-Guided Design with Formalization](https://ieeexplore.ieee.org/abstract/document/10005396)
-- [Master's Thesis - German](https://www.researchgate.net/publication/354599682_Erweiterung_von_MBSE_Prozessen_bei_der_Entwicklung_sicherheitskritischer_Systemarchitekturen_durch_die_Nutzung_Formaler_Methoden)
 
 -----------------------------------------------------------------------------------------------
 
