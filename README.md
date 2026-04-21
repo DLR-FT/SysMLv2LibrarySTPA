@@ -1,6 +1,6 @@
 # About
 
-The development of complex transport systems presents significant safety challenges. While safety-driven and model-based approaches show promise, their adoption is still in its early stages. One hazard analysis method that is gaining traction is the System Theoretic Process Analysis (STPA). Integrating STPA with the Systems Modeling Language (SysML) holds great potential, thanks to their shared system-theoretic foundation. Simultaneously, SysML v2, with extensibility features such as libraries, offers new integration opportunities. Accordingly, this repo proposes an open-source SysML v2 library for STPA.
+The development of complex transport systems presents significant safety challenges. While safety-driven and model-based approaches show promise, their adoption is still in its early stages. One hazard analysis method that is gaining traction is the System Theoretic Process Analysis (STPA). Integrating STPA with the Systems Modeling Language (SysML) holds great potential, thanks to their shared system-theoretic foundation. Simultaneously, SysML v2, with extensibility features such as libraries, offers new integration opportunities. To try the integration, an open-source SysML v2 library for STPA was created.
 
 This repo contains:
 - A library for STPA in the textual notation of SysML v2 - [LinkToLibrary](Library/LibrarySTPA.sysml)
@@ -8,7 +8,7 @@ This repo contains:
 - A jupyter notebook version that showcases the application - [LinkToNotebook](Jupyter/LibrarySTPA.ipynb)
 - A Cameo specific extension that includes advanced views and diagram definitions - [LinkToCameoViews](Library/CameoViewsSTPA.sysml)
 
-The library is divided into six packages. For each of the four STPA steps, one dedicated package is used. The fifth and sixth package includes the metadata types and view/viewpoint definitions that facilitate the application of the library.
+The library is divided into six packages. For each of the four STPA steps, one dedicated package is used. The fifth and sixth package include the metadata types and view/viewpoint definitions that facilitate the application of the library.
 
 ![Library Packages 1 to 3](Images/LibraryPackages1to3.svg)
 ![Library Packages 4 to 6](Images/LibraryPackages4to6.svg)
@@ -24,7 +24,7 @@ The LibrarySTPA.sysml and ExampleSTPA.sysml files of the library can be used wit
 - Cameo Community Edition - [LinkToWebsite](https://discover.3ds.com/free-catia-sysmlv2-community-edition)
 - SysON - [LinkToWebsite](https://mbse-syson.org/)
 
-For [Cameo](https://discover.3ds.com/free-catia-sysmlv2-community-edition) users, advanced tool features allow to define and use specific extensions such as:
+For [Cameo](https://discover.3ds.com/free-catia-sysmlv2-community-edition) users, advanced tool features allow defining and using specific extensions such as:
 
 [STPA-specific diagrams](Library/CameoViewsSTPA.sysml) that support the graphical creation of library elements
 
