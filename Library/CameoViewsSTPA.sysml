@@ -31,22 +31,34 @@ package CameoViewsSTPA {
         e.referent
     }
     view def HazardsTable :> CoreViews::bt, SymbolicViewsByExpression::NonStandardLibraryElementFilter {
-        render rendering :>> asTable {
+        render rendering HazardsTableRendering :>> asTable {
             view Hazard : CoreViews::ColumnByFeatureView :> column {
                 ref item :>> columnFeature = featureTarget meta Feature;
             }
-            view LossReference : CoreViews::ColumnByExpressionView :> column {
-                render rendering asTableCell : CoreViews::ElementCellRendering :>> asTableCell {
+            view LossRef : CoreViews::ColumnByExpressionView :> column {
+                render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        getRef(rowElement, "lossesRef") as Metaobject
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "lossRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
+                    }
+                }
+            }
+        }
+        part customElementCreationDialog : DS_UIComponents::UIComponents::SysMLElementCreationDialog :>> creationDialog {
+            attribute :>> actionName default "Create Hazard";
+            part messageMenu :> itemCategories {
+                part softReqItem : DS_UIComponents::CoreUIComponents::Dialogs::DialogItem :> abstractItems {
+                    attribute :>> label default "hazard";
+                    perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromTemplate :>> operation {
+                        in ref = LibrarySTPA::MetaTypesSTPA::hazardExample meta Feature;
                     }
                 }
             }
         }
     }
     view def UCAsTable :> CoreViews::bt, SymbolicViewsByExpression::NonStandardLibraryElementFilter {
-        render rendering :>> asTable {
+        render rendering UCAsTableRendering :>> asTable {
             view UCA : CoreViews::ColumnByFeatureView :> column {
                 ref item :>> columnFeature = featureTarget meta Feature;
             }
@@ -55,62 +67,79 @@ package CameoViewsSTPA {
                 render rendering : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in rowElement : Element;
-                        (rowElement.ownedElement as Comment).body
+                        (rowElement.ownedElement as KerML::Comment).body
                     }
                 }
             }
             view ContextRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "contextRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "contextRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
                     }
                 }
             }
             view SourceRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "sourceRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "sourceRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
                     }
                 }
             }
             view ControlActionRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "controlActionRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "controlActionRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
                     }
                 }
             }
             view TypeRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "typeRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "typeRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
                     }
                 }
             }
             view ReceiverRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "receiverRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "receiverRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
                     }
                 }
             }
             view HazardsRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "hazardsRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "hazardsRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
+                    }
+                }
+            }
+        }
+        part customElementCreationDialog : DS_UIComponents::UIComponents::SysMLElementCreationDialog :>> creationDialog {
+            attribute :>> actionName default "Create UCA";
+            part messageMenu :> itemCategories {
+                part softReqItem : DS_UIComponents::CoreUIComponents::Dialogs::DialogItem :> abstractItems {
+                    attribute :>> label default "uca";
+                    perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromTemplate :>> operation {
+                        in ref = LibrarySTPA::MetaTypesSTPA::ucaExample meta Feature;
                     }
                 }
             }
         }
     }
     view def LSsTable :> CoreViews::bt, SymbolicViewsByExpression::NonStandardLibraryElementFilter {
-        render rendering :>> asTable {
+        render rendering LSsTableRendering :>> asTable {
             view LS : CoreViews::ColumnByFeatureView :> column {
                 ref item :>> columnFeature = featureTarget meta Feature;
             }
@@ -119,23 +148,36 @@ package CameoViewsSTPA {
                 render rendering : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
                         in rowElement : Element;
-                        (rowElement.ownedElement as Comment).body
+                        (rowElement.ownedElement as KerML::Comment).body
                     }
                 }
             }
             view CausalFactorsRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "causalFactorsRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "causalFactorsRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
                     }
                 }
             }
             view UCAsRef : CoreViews::ColumnByExpressionView :> column {
                 render rendering asTableCell : CoreViews::StringCellRendering :>> asTableCell {
                     calc :>> getValue {
-                        in :>> rowElement;
-                        (getRef(rowElement, "ucasRef") as Feature).declaredName
+                        in :>> rowElement : Element;
+                        attribute elementName : LiteralString = "ucasRef";
+                        (getRef(rowElement, elementName) as Feature).declaredName
+                    }
+                }
+            }
+        }
+        part customElementCreationDialog : DS_UIComponents::UIComponents::SysMLElementCreationDialog :>> creationDialog {
+            attribute :>> actionName default "Create Loss Scenario";
+            part messageMenu :> itemCategories {
+                part softReqItem : DS_UIComponents::CoreUIComponents::Dialogs::DialogItem :> abstractItems {
+                    attribute :>> label default "loss scenario";
+                    perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromTemplate :>> operation {
+                        in ref = LibrarySTPA::MetaTypesSTPA::lossScenarioExample meta Feature;
                     }
                 }
             }

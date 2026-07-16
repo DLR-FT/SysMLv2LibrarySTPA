@@ -1,3 +1,4 @@
+
 library package LibrarySTPA {
     private import ScalarValues::*;
     private import Views::*;
@@ -35,7 +36,7 @@ library package LibrarySTPA {
              * <Loss of> <life>.
              */
             attribute stateOfConcern : StatesOfConcern;
-            ref concern stakeholderConcern;
+            stakeholderConcern;
         }
         occurrence losses [*] : Loss;
         enum def StatesOfConcern {
@@ -54,9 +55,9 @@ library package LibrarySTPA {
              * Example:
              * <Automated vehicle> <loses control> resulting in [loss of life].
              */
-            ref part systemRef [1];
+            systemRef [1];
             attribute unsafeCondition [1] : String;
-            ref occurrence lossesRef [1..*] : Loss;
+            lossesRef [1..*] : Loss;
         }
         occurrence hazards [*] : Hazard;
     }
@@ -75,18 +76,16 @@ library package LibrarySTPA {
              * Example:
              * A control oriented model showing the interactions of an automated vehicle with related systems and people.
              */
-            ref part actuatorsRef [*] : Actuator;
-            ref part sensorsRef [*] : Sensor;
-            ref part processesRef [*] : Process;
-            ref part controllersRef [*] : Controller;
-            ref flow controlActionsRef [*] : ControlAction;
-            ref flow feedbacksRef [*] : Feedback;
-            ref flow otherInformationsRef [*] : OtherInformation;
+            actuatorsRef [*] : Actuator;
+            sensorsRef [*] : Sensor;
+            processesRef [*] : Process;
+            controllersRef [*] : Controller;
+            controlActionsRef : ControlAction;
+            feedbacksRef : Feedback;
+            otherInformationsRef : OtherInformation;
         }
         abstract part def ControlStructurePart {
             doc /* Overarching type that covers properties that are common for each control structure part */
-            in item interactionsIn;
-            out item interactionsOut;
         }
         part controlStructures [*] : ControlStructure;
         part def Controller :> ControlStructurePart {
@@ -97,7 +96,7 @@ library package LibrarySTPA {
              * Example:
              * ControlElectronics of an automated vehicle.
              */
-            ref part processBeliefs [*] : ProcessModel;
+            processBeliefs [*] : ProcessModel;
         }
         part controllers [*] : Controller;
         part def HumanController :> Controller {
@@ -108,7 +107,7 @@ library package LibrarySTPA {
              * Example:
              * Teleoperator which makes decisions about the operation of an automated vehicle.
              */
-            ref part mentalBeliefs [*] : MentalModel;
+            mentalBeliefs [*] : MentalModel;
         }
         part humanControllers [*] : HumanController;
         part def ProcessModel {
@@ -166,7 +165,7 @@ library package LibrarySTPA {
              */
         }
         part processes [*] : Process;
-        flow def ControlAction {
+        abstract flow def ControlAction {
             doc
             /* Definition:
              * Represents a command, instruction, or other directive 
@@ -175,10 +174,8 @@ library package LibrarySTPA {
              * Example:
              * Teleopartor command.
              */
-            end actionSource;
-            end actionTarget;
         }
-        flow controlActions [*] : ControlAction;
+        abstract flow controlActions [*] : ControlAction;
         flow def Feedback {
             doc
             /* Definition:
@@ -190,7 +187,7 @@ library package LibrarySTPA {
             end feedbackSource;
             end feedbackTarget;
         }
-        flow feedbacks [*] : Feedback;
+        flow feedbacks [*] : Feedback from sensors.ownedPorts to controllers.ownedPorts;
         flow def OtherInformation {
             doc
             /* Definition:
@@ -202,7 +199,7 @@ library package LibrarySTPA {
             end informationSource;
             end informationTarget;
         }
-        flow otherInformation [*] : OtherInformation;
+        flow otherInformation [*] : OtherInformation from controllers.ownedPorts to controllers.ownedPorts;
     }
     package IdentifyUCAs {
         doc
@@ -219,8 +216,8 @@ library package LibrarySTPA {
              * Environmental Context = A road closure within a one way street.
              * System Context = An automated vehicle is in an emergency state.
              */
-            ref occurrence envConRef : EnvironmentalCondition;
-            ref occurrence sysConRef : SystemCondition;
+            envConRef : EnvironmentalCondition;
+            sysConRef : SystemCondition;
         }
         occurrence contexts [*] : Context;
         occurrence def EnvironmentalCondition;
@@ -256,12 +253,12 @@ library package LibrarySTPA {
              * UCA = The <teleoperator> <does not provide> the <operation command> to the <automated vehicle> 
              * <during a complex traffic situation> leading to [H1 - the vehicle not being able to continue its mission].
              */
-            ref part sourceRef [1];
-            enum typeRef [1] : TypesOfCA;
-            ref flow controlActionRef [1] : ModelControlStructure::ControlAction;
-            ref part receiverRef [1];
-            ref occurrence contextRef [1] : Context;
-            ref occurrence hazardsRef [1..*] : DefineAnalysisPurpose::Hazard;
+            sourceRef [1];
+            typeRef [1] : TypesOfCA;
+            controlActionRef [1] : ModelControlStructure::ControlAction;
+            receiverRef [1];
+            contextRef [1] : Context;
+            hazardsRef [1..*] : DefineAnalysisPurpose::Hazard;
         }
         occurrence unsafeControlActions [*] : UnsafeControlAction;
         occurrence def UnwantedControlAction :> UnsafeControlAction;
@@ -284,7 +281,7 @@ library package LibrarySTPA {
              * Interaction = <Teleoperator command> & <not forwarded>.
              * Process model = <Awareness of supervised vehicles> & <is incorrect>.
              */
-            ref occurrence factorRef [1];
+            factorRef [1];
             attribute status : String;
         }
         occurrence causalFactors [*] : CausalFactor;
@@ -300,49 +297,49 @@ library package LibrarySTPA {
              * <Teleoperator command> & <not forwarded> leading to [UCA1]
              * <Awareness of supervised vehicles> & <is incorrect> leading to [UCA2]  
              */
-            ref occurrence causalFactorsRef [1..*];
-            ref occurrence ucasRef [1..*] : IdentifyUCAs::UnsafeControlAction;
+            causalFactorsRef [1..*];
+            ucasRef [1..*] : IdentifyUCAs::UnsafeControlAction;
         }
         occurrence lossScenarios [*] : LossScenario;
     }
     package MetaTypesSTPA {
-        doc /* This package contains all the meta types for the STPA library elements
+        doc /* This package contains all the meta types for the STPA library elements and a corresponding instance
          */
         #loss occurrence lossExample {
             attribute :>> stateOfConcern;
-            ref concern :>> stakeholderConcern;
+            :>> stakeholderConcern;
         }
         metadata def <loss> :> Metaobjects::SemanticMetadata {
             :>> baseType = DefineAnalysisPurpose::losses meta SysML::Systems::OccurrenceUsage;
         }
         #hazard occurrence hazardExample {
-            ref part :>> systemRef;
+            :>> systemRef;
             attribute :>> unsafeCondition;
-            ref occurrence :>> lossesRef;
+            :>> lossesRef;
         }
         metadata def <hazard> :> Metaobjects::SemanticMetadata {
             :>> baseType = DefineAnalysisPurpose::hazards meta SysML::Systems::OccurrenceUsage;
         }
         #controlStructure part controlStructureExample {
-            ref part :>> actuatorsRef;
-            ref part :>> sensorsRef;
-            ref part :>> processesRef;
-            ref part :>> controllersRef;
-            ref flow :>> controlActionsRef;
-            ref flow :>> feedbacksRef;
-            ref flow :>> otherInformationsRef;
+            :>> actuatorsRef;
+            :>> sensorsRef;
+            :>> processesRef;
+            :>> controllersRef;
+            :>> controlActionsRef;
+            :>> feedbacksRef;
+            :>> otherInformationsRef;
         }
         metadata def <controlStructure> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::controlStructures meta SysML::Systems::PartUsage;
         }
         #controller part controllerExample {
-            ref part :>> processBeliefs;
+            :>> processBeliefs;
         }
         metadata def <controller> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::controllers meta SysML::Systems::PartUsage;
         }
         #controllerHuman part controllerHumanExample {
-            ref part :>> mentalBeliefs;
+            :>> mentalBeliefs;
         }
         metadata def <controllerHuman> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::humanControllers meta SysML::Systems::PartUsage;
@@ -359,11 +356,17 @@ library package LibrarySTPA {
         metadata def <process> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::processes meta SysML::Systems::PartUsage;
         }
-        #controlAction flow controlActionExample;
+        #controlAction flow controlActionExample {
+            end ::> controllerExample;
+            end ::> actuatorExample;
+        }
         metadata def <controlAction> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::controlActions meta SysML::Systems::FlowUsage;
         }
-        #feedback flow feedbackExample;
+        #feedback flow feedbackExample {
+            end ::> sensorExample;
+            end ::> controllerExample;
+        }
         metadata def <feedback> :> Metaobjects::SemanticMetadata {
             :>> baseType = ModelControlStructure::feedbacks meta SysML::Systems::FlowUsage;
         }
@@ -376,12 +379,12 @@ library package LibrarySTPA {
             :>> baseType = ModelControlStructure::mentalModels meta SysML::Systems::PartUsage;
         }
         #uca occurrence ucaExample {
-            ref part :>> sourceRef;
-            enum :>> typeRef;
-            ref flow :>> controlActionRef;
-            ref part :>> receiverRef;
-            ref occurrence :>> contextRef;
-            ref occurrence :>> hazardsRef;
+            :>> sourceRef;
+            :>> typeRef;
+            :>> controlActionRef;
+            :>> receiverRef;
+            :>> contextRef;
+            :>> hazardsRef;
         }
         metadata def <uca> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyUCAs::unsafeControlActions meta SysML::Systems::OccurrenceUsage;
@@ -395,22 +398,22 @@ library package LibrarySTPA {
             :>> baseType = IdentifyUCAs::systemConditions meta SysML::Systems::OccurrenceUsage;
         }
         #context occurrence contextExample {
-            ref occurrence :>> envConRef;
-            ref occurrence :>> sysConRef;
+            :>> envConRef;
+            :>> sysConRef;
         }
         metadata def <context> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyUCAs::contexts meta SysML::Systems::OccurrenceUsage;
         }
         #cf occurrence causalFactorExample {
-            ref occurrence :>> factorRef;
+            :>> factorRef;
             attribute :>> status;
         }
         metadata def <cf> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyLSs::causalFactors meta SysML::Systems::OccurrenceUsage;
         }
         #ls occurrence lossScenarioExample {
-            ref occurrence :>> causalFactorsRef;
-            ref occurrence :>> ucasRef;
+            :>> causalFactorsRef;
+            :>> ucasRef;
         }
         metadata def <ls> :> Metaobjects::SemanticMetadata {
             :>> baseType = IdentifyLSs::lossScenarios meta SysML::Systems::OccurrenceUsage;
